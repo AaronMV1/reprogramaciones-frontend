@@ -749,7 +749,7 @@ export class CalendarioComponent implements OnInit {
                         <li>Programa: Medicina Humana</li>
                         <li>Asignatura: Seminario Integrador I</li>
                         <li>Fecha: 20/06/2025</li>
-                        <li>Hora: 10:00am - 12:00pm</li>
+                        <li>Hora: 10:00am - 11:00pm</li>
                         <li>Local: Chorrillos</li>
                         <li>Ambiente: Aula 204 - Pabellón B</li>
                     </ul>
