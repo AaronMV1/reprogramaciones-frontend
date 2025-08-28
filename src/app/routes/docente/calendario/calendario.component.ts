@@ -742,12 +742,12 @@ export class CalendarioComponent implements OnInit {
                 <img src="assets/img/imagenes/plantilla-correo.png" alt="" style="width: 100%;">
 
                 <div style="flex: 1; padding: 1rem 2rem; font-size: .8rem; font-family: calibri;">
-                    <h4>Estimado(a) Docente:</h4>
+                    <h4>Estimado(a) Docente Melendez Donayre Eric Joel</h4>
                     <p style="text-align: justify;">Le informamos que se ha realizado una reprogramación en una de sus asignaturas del presente semestre. A continuación, se detallan los cambios efectuados:</p>
 
                     <ul>
-                        <li>Programa: Ingeniería de Sistemas</li>
-                        <li>Asignatura: Ingeniería de Software</li>
+                        <li>Programa: Medicina Humana</li>
+                        <li>Asignatura: Seminario Integrador I</li>
                         <li>Fecha: 20/06/2025</li>
                         <li>Hora: 10:00am - 12:00pm</li>
                         <li>Local: Chorrillos</li>
