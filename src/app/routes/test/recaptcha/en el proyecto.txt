@@ -1,0 +1,71 @@
+
+
+
+APP MODULE
+
+
+import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
+
+Imports: [
+	RecaptchaModule,
+	RecaptchaFormsModule,
+]
+
+
+
+
+ROUTES.MODULE
+
+
+import { RecaptchaModule, RecaptchaFormsModule } from "ng-recaptcha";
+
+imports: [
+	RecaptchaModule,
+        RecaptchaFormsModule,
+]
+
+
+
+
+HTML
+
+
+<p>catcha works!</p>
+
+
+<re-captcha (resolved)="resolved($event)" siteKey="6LdaiYorAAAAADUG__0Y9dmqBRKJd4oKtP0Xi-Sz">	// siteKey es obtenido de la página de recaptcha en "dependencia"
+  
+</re-captcha>
+
+
+
+TS
+
+
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
+
+
+constructor(private _http: HttpClient, private _router: Router) { }
+
+    ngOnInit(): void { }
+
+    resolved(token: any) {
+        console.log("Captcha token: ", token);
+
+        this._http.post('https://httpbin.org/post', { token: token }).subscribe(
+            res => {
+                console.log("Response from server: ", res);
+                window.location.href = 'https://www.google.com/';
+            },
+            err => {
+                console.error("Error verifying captcha", err);
+            }
+        );
+
+    }
+
+
+

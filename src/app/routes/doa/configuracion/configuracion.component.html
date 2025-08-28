@@ -1,0 +1,264 @@
+<div class="contenedor">
+
+    <h2>REPROGRAMACIÓN DE CLASES</h2>
+
+    <div class="ventana">
+
+        <div class="ventana-header">
+
+            <div class="ventana-header-titulo">
+
+                <ng-icon name="featherSettings" />
+                <h2>Configuración</h2>
+
+            </div>
+
+            <div class="ventana-header-botones">
+
+                <div class="boton boton-color-1" (click)="redirigirInicio()">
+                    <ng-icon name="featherXCircle" />
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="separador"></div>
+
+        <div class="grupos">
+
+            <div class="grupo">
+
+                <div class="opcion-fila">
+                    <label for="">Límite de reprogramaciones por clase:</label>
+                    <select name="" id="" [(ngModel)]="limiteClase">
+                        <option value="1">1</option>
+                        <option value="2" selected>2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                    </select>
+                </div>
+
+                <div class="opcion-fila">
+                    <label for="">Plazo máximo para reprogramar una clase no dictada:</label>
+                    <select name="" id="" [(ngModel)]="plazoMaximo">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7" selected>7</option>
+                    </select>
+                </div>
+
+                <div class="opcion-columna">
+
+                    <label for="">Gestión de notificaciones por correo:</label>
+
+                    <label>
+                        <input type="checkbox" name="docente" [(ngModel)]="checkboxDocente">Docente
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="alumno" [(ngModel)]="checkboxAlumno">Alumno
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="doa" [(ngModel)]="checkboxDOA">DOA
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="coordinador" [(ngModel)]="checkboxCoordinador">Coordinador de
+                        Ambiente
+                    </label>
+
+                </div>
+
+            </div>
+
+            <div class="grupo">
+
+                <div class="opcion-fila">
+                    <label for="">Lista de usuarios:</label>
+                    <div class="boton boton-color-1" (click)="abrirPopup('usuarios')">
+                        <p>Abrir</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="botones botones-end">
+
+            <div class="boton boton-color-1" (click)="restablecerPredeterminados()">
+                <ng-icon name="featherRotateCcw"></ng-icon>
+                <p>Predeterminados</p>
+            </div>
+
+            <div class="boton boton-color-1" (click)="actualizarConfiguracion()">
+                <ng-icon name="featherSave"></ng-icon>
+                <p>Guardar Cambios</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="popup" *ngIf="popupActivo">
+
+    <div class="popup-usuarios" *ngIf="popupActivo === 'usuarios'">
+
+        <div class="popup-header">
+
+            <div class="popup-titulo">
+                <ng-icon name="featherUsers" />
+                <h3>Lista de Usuarios</h3>
+            </div>
+
+            <div class="popup-cerrar" (click)="cerrarPopup()">
+                <ng-icon name="featherXCircle" />
+            </div>
+
+        </div>
+
+        <div class="campos">
+
+            <div class="campo-contenedor campo-contenedor-25">
+
+                <label for="" class="label label-obligatorio">Nombres</label>
+
+                <div class="campo">
+                    <input type="text" placeholder="Nombres" [(ngModel)]="popupUsuarioNombres" />
+                </div>
+
+            </div>
+
+            <div class="campo-contenedor campo-contenedor-25">
+
+                <label for="" class="label label-obligatorio">Apellidos</label>
+
+                <div class="campo">
+
+                    <input type="text" placeholder="Apellidos" [(ngModel)]="popupUsuarioApellidos" />
+
+                </div>
+
+            </div>
+
+            <div class="campo-contenedor campo-contenedor-25">
+
+                <label for="" class="label label-obligatorio">Correo</label>
+
+                <div class="campo">
+
+                    <input type="text" placeholder="Correo" [(ngModel)]="popupUsuarioCorreo" />
+
+                </div>
+
+            </div>
+
+            <div class="campo-contenedor campo-contenedor-25">
+
+                <label for="" class="label label-obligatorio">Perfil</label>
+
+                <div class="campo">
+
+                    <select name="" [(ngModel)]="popupUsuarioPerfil">
+                        <option value="" selected="true" disabled="disabled" hidden="true">Seleccione una opción</option>
+                        <option value="Docente">Docente</option>
+                        <option value="DOA">DOA</option>
+                        <option value="Coordinador de Ambiente">Coordinador de Ambiente</option>
+                    </select>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="campos">
+
+            <div class="campo-contenedor campo-contenedor-25">
+
+                <div class="boton boton-color-1" (click)="registrarUsuario()">
+                    <ng-icon name="featherPlus"></ng-icon>
+                    <p>Agregar</p>
+                </div>
+
+            </div>
+
+            <div class="campo-contenedor campo-contenedor-25">
+
+                <div class="boton boton-color-1" (click)="actualizarUsuario()">
+                    <ng-icon name="featherArrowUp"></ng-icon>
+                    <p>Actualizar</p>
+                </div>
+
+            </div>
+
+            <div class="campo-contenedor campo-contenedor-25">
+
+                <div class="boton boton-color-1" (click)="eliminarUsuario()">
+                    <ng-icon name="featherX"></ng-icon>
+                    <p>Eliminar</p>
+                </div>
+
+            </div>
+
+            <div class="campo-contenedor campo-contenedor-25">
+
+                <div class="campo">
+
+                    <input type="text" placeholder="Búsqueda" [(ngModel)]="popupUsuarioBusqueda" (input)="filtrarUsuarios()" />
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <div class="popup-lista">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Correo</th>
+                        <th>Perfil</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @for (item of usuariosFiltrados; track $index) {
+
+                    <tr (click)="copiarUsuarioDatos(item)">
+                        <td>{{item.nombres}}</td>
+                        <td>{{item.apellidos}}</td>
+                        <td>{{item.correo}}</td>
+                        <td>{{item.perfil}}</td>
+                    </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <p>• Para eliminar o modificar una cuenta es necesario ingresar el correo electrónico asociado.</p>
+
+    </div>
+
+</div>

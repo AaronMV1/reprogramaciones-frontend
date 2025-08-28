@@ -1,0 +1,173 @@
+<div class="main">
+
+    <h2>REPROGRAMACIÓN DE CLASES</h2>
+
+    <div class="ventana">
+
+        <div class="ventana-header">
+
+            <div class="ventana-header-titulo">
+
+                <ng-icon name="featherFileText" />
+                <h2>Solicitudes</h2>
+
+            </div>
+
+            <div class="ventana-header-botones">
+
+                <div class="boton boton-color-1" (click)="redirigirConfiguracion()">
+                    <ng-icon name="featherSettings" />
+                    <p>Configuración</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="separador"></div>
+
+        <div class="lista">
+
+            <div class="campos-grid-6">
+
+                <div class="campo">
+                    <select name="" id="" [(ngModel)]="filtroSemestre">
+                        <option value="" selected="true" disabled="true" hidden="true">Semestre</option>
+                        @for (item of filtroSemestreLista; track $index) {
+                        <option value="{{item}}">{{item}}</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <select name="" id="" [(ngModel)]="filtroPrograma">
+                        <option value="" selected="true" disabled="true" hidden="true">Programa</option>
+                        @for (item of filtroProgramaLista; track $index) {
+                        <option value="{{item}}">{{item}}</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <select name="" id="" [(ngModel)]="filtroLocal">
+                        <option value="" selected="true" disabled="true" hidden="true">Local</option>
+                        @for (item of filtroLocalLista; track $index) {
+                        <option value="{{item}}">{{item}}</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <select name="" id="" [(ngModel)]="filtroAsignatura">
+                        <option value="" selected="true" disabled="true" hidden="true">Asignatura</option>
+                        @for (item of filtroAsignaturaLista; track $index) {
+                        <option value="{{item}}">{{item}}</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <select name="" id="" [(ngModel)]="filtroAmbiente">
+                        <option value="" selected="true" disabled="true" hidden="true">Ambiente</option>
+                        @for (item of filtroAmbienteLista; track $index) {
+                        <option value="{{item}}">{{item}}</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="boton boton-color-1" (click)="aplicarFiltros()">
+                    <ng-icon name="featherFilter" />
+                    <p>Filtrar</p>
+                </div>
+                
+                <div class="boton boton-color-1" (click)="restaurarLista()">
+                    <ng-icon name="featherRotateCcw"></ng-icon>
+                    <p>Restaurar</p>
+                </div>
+
+            </div>
+
+            <div class="lista-productos">
+
+                <table class="lista-tabla">
+
+                    <thead>
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Semestre</th>
+                            <th>Programa</th>
+                            <th>Local</th>
+                            <th>Asignatura</th>
+                            <th>Componente</th>
+                            <th>Ambiente</th>
+                            <th>Fecha</th>
+                            <th>Motivo</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @for (item of procedimientosPaginados; track $index) {
+
+                        <tr>
+                            <td>{{$index + 1}}</td>
+                            <td>{{item.semestre}}</td>
+                            <td>{{item.programa}}</td>
+                            <td>{{item.local}}</td>
+                            <td>{{item.asignatura}}</td>
+                            <td>{{item.componente}}</td>
+                            <td>{{item.tipoAmbiente + " " + item.ambiente}}</td>
+                            <td>{{item.fecha + " " + item.horaIni + "-" + item.horaFin}}</td>
+                            <td><p>⋮</p></td>
+                        </tr>
+
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <div class="paginador">
+
+            <div class="cambiar">
+
+                <button class="cambiar-paginador" (click)="cambiarPagina(paginaActual - 1)"
+                    [disabled]="paginaActual === 1">
+                    <ng-icon name="featherArrowLeft" />
+                </button>
+
+                <span>Página {{paginaActual}} de {{totalPaginas}}</span>
+
+                <button class="cambiar-paginador" (click)="cambiarPagina(paginaActual + 1)"
+                    [disabled]="paginaActual === totalPaginas">
+                    <ng-icon name="featherArrowRight" />
+                </button>
+
+            </div>
+
+            <div class="cantidad">
+
+                <label>Mostrar</label>
+
+                <select [(ngModel)]="itemsPorPagina" (change)="paginaActual = 1">
+                    <option [ngValue]="10">10</option>
+                    <option [ngValue]="20">20</option>
+                    <option [ngValue]="30">30</option>
+                    <option [ngValue]="40">40</option>
+                </select>
+
+                <span>por página</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

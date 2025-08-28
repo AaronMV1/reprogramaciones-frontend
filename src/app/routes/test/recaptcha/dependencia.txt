@@ -1,0 +1,17 @@
+GOOGLE - CREAR RECAPTCHA 
+
+https://www.google.com/recaptcha/admin/create?hl=es-419
+
+
+
+
+TUTORIAL
+
+https://www.youtube.com/watch?v=GWc8OeYaX0E
+
+
+
+
+DEPENDENCIAS
+
+npm install ng-recaptcha

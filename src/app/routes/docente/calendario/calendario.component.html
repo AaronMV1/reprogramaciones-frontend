@@ -1,0 +1,529 @@
+
+
+<!-- 
+<div class="spinner" *ngIf="isLoading">
+    <mat-spinner diameter="50" color="primary" mode="indeterminate"></mat-spinner>
+</div> -->
+
+
+<div class="contenedor">
+
+    <h2>REPROGRAMACIÓN DE CLASES</h2>
+
+    <div class="calendario-contenedor">
+
+        <div class="calendario">
+            <full-calendar [options]="calendarOptions" (eventDrop)="handleEventDrop($event)">
+                <div class="mensaje">Nuevo</div>
+            </full-calendar>
+        </div>
+
+        <div class="leyenda" (click)="consultarAmbientesDisponibles()">
+            <h3>Leyenda</h3>
+            <p>Clase</p>
+            <p>Clase Reprogramada</p>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="popup" *ngIf="popup">
+
+    <div class="popup-formulario" *ngIf="popupFormulario">
+
+        <div class="popup-header">
+
+            <div class="popup-titulo">
+                <ng-icon name="featherCalendar" />
+                <h3>Nueva Reprogramación - {{campoAsignatura}}</h3>
+            </div>
+
+            <div class="popup-cerrar" (click)="mostrarFormulario(0, null)">
+                <ng-icon name="featherXCircle" />
+            </div>
+
+        </div>
+
+        <div class="campos-contenedor">
+
+            <div class="campos-grid">
+
+                <div class="campo-contenedor-grid">ID Curso: {{popupFormularioIDCurso}}</div>
+                <div class="campo-contenedor-grid">N° Clase: {{popupFormularioNoClase}}</div>
+                <div class="campo-contenedor-grid">Componente: {{popupFormularioCompnte}}</div>
+                <div class="campo-contenedor-grid">Sesión: {{popupFormularioSesion}}</div>
+
+            </div>
+
+            <div class="campos-grid">
+
+                <div class="campo-contenedor-grid">
+
+                    <label for="" class="label label-obligatorio"
+                        [ngClass]="campoComponenteVar ? 'label-vacio' : ''">Componente</label>
+
+                    <div class="campo">
+
+                        <select [(ngModel)]="campoComponente">
+                            <option value="" disabled [selected]>Seleccionar componente</option>
+                            <option value="Teoría">Teoría</option>
+                            <option value="Práctica">Práctica</option>
+                            <option value="Taller">Taller</option>
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <div class="campo-contenedor-grid">
+
+                    <label for="" class="label label-obligatorio"
+                        [ngClass]="campoTipoAmbienteVar ? 'label-vacio' : ''">Tipo de Ambiente</label>
+
+                    <div class="campo">
+
+                        <select [(ngModel)]="campoTipoAmbiente">
+                            <option value="" disabled [selected]>Seleccione un estado</option>
+                            <option value="Aula">Aula</option>
+                            <option value="Laboratorio">Laboratorio</option>
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <div class="campo-contenedor-grid">
+
+                    <label for="" class="label label-obligatorio"
+                        [ngClass]="campoFechaVar ? 'label-vacio' : ''">Fecha</label>
+
+                    <div class="campo">
+
+                        <input type="date" [(ngModel)]="campoFecha" />
+
+                    </div>
+
+                </div>
+
+                <div class="campo-contenedor-grid">
+
+                    <div class="boton boton-color-1">
+                        <p>Buscar</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="campos-grid">
+
+                <div class="campo-contenedor-grid">
+
+                    <label for="" class="label label-obligatorio"
+                        [ngClass]="campoAmbienteVar ? 'label-vacio' : ''">Ambiente</label>
+
+                    <div class="campo">
+
+                        <select [(ngModel)]="campoAmbiente">
+                            <option value="" disabled [selected]>Seleccione un estado</option>
+                            <option value="opcion 1">opción 1</option>
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <div class="campo-contenedor-grid">
+
+                    <div class="" style="display: flex; flex-direction: row; gap: 2rem">
+
+                        <div class="campo-contenedor campo-contenedor-50">
+
+                            <label for="" class="label label-obligatorio"
+                                [ngClass]="campoHoraIniVar ? 'label-vacio' : ''">Hora
+                                Inicio</label>
+
+                            <div class="campo">
+
+                                <select name="horas" id="horas" [(ngModel)]="campoHoraIni">
+                                    <option value="" disabled [selected]>HH:MM</option>
+                                    <option value="07:00">07:00</option>
+                                    <option value="07:45">07:45</option>
+                                    <option value="08:30">08:30</option>
+                                    <option value="09:15">09:15</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="10:45">10:45</option>
+                                    <option value="11:30">11:30</option>
+                                    <option value="12:15">12:15</option>
+                                    <option value="13:00">13:00</option>
+                                    <option value="13:45">13:45</option>
+                                    <option value="14:30">14:30</option>
+                                    <option value="15:15">15:15</option>
+                                    <option value="16:00">16:00</option>
+                                    <option value="16:45">16:45</option>
+                                    <option value="17:30">17:30</option>
+                                    <option value="18:15">18:15</option>
+                                    <option value="19:00">19:00</option>
+                                    <option value="19:45">19:45</option>
+                                    <option value="20:30">20:30</option>
+                                    <option value="21:15">21:15</option>
+                                    <option value="22:00">22:00</option>
+                                    <option value="22:45">22:45</option>
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                        <div class="campo-contenedor campo-contenedor-50">
+
+                            <label for="" class="label label-obligatorio"
+                                [ngClass]="campoHoraFinVar ? 'label-vacio' : ''">Hora
+                                Fin</label>
+
+                            <div class="campo">
+
+                                <select name="horas" id="horas" [(ngModel)]="campoHoraFin">
+                                    <option value="" disabled [selected]>HH:MM</option>
+                                    <option value="07:45">07:45</option>
+                                    <option value="08:30">08:30</option>
+                                    <option value="09:15">09:15</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="10:45">10:45</option>
+                                    <option value="11:30">11:30</option>
+                                    <option value="12:15">12:15</option>
+                                    <option value="13:00">13:00</option>
+                                    <option value="13:45">13:45</option>
+                                    <option value="14:30">14:30</option>
+                                    <option value="15:15">15:15</option>
+                                    <option value="16:00">16:00</option>
+                                    <option value="16:45">16:45</option>
+                                    <option value="17:30">17:30</option>
+                                    <option value="18:15">18:15</option>
+                                    <option value="19:00">19:00</option>
+                                    <option value="19:45">19:45</option>
+                                    <option value="20:30">20:30</option>
+                                    <option value="21:15">21:15</option>
+                                    <option value="22:00">22:00</option>
+                                    <option value="22:45">22:45</option>
+                                    <option value="23:30">22:45</option>
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="campo-contenedor-grid">
+
+                    <label for="" class="label label-obligatorio" [ngClass]="campoMotivoVar ? 'label-vacio' : ''">Motivo
+                        de reprogramación</label>
+
+                    <div class="campo">
+
+                        <select [(ngModel)]="campoMotivo">
+                            <option value="" disabled [selected]>Seleccione un estado</option>
+                            <option value="Causas externas">Causas externas</option>
+                            <option value="Causas institucionales">Causas institucionales</option>
+                            <option value="Solicitud de docente">Solicitud de docente</option>
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <div class="campo-contenedor-grid">
+
+                    <div class="boton boton-color-1">
+                        <p>Agregar</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- <div class="tabla-registro-contenedor">
+
+                <table class="tabla-registro">
+
+                    <thead>
+
+                        <tr>
+                            <th>Clase</th>
+                            <th>Componente</th>
+                            <th>Tipo de Ambiente</th>
+                            <th>Fecha</th>
+                            <th>Ambiente</th>
+                            <th>Motivo</th>
+                            <th>Acción</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @for (item of listaTablaRegistro; track $index) {
+
+                        <tr>
+                            <td>{{item.clase}}</td>
+                            <td>{{item.componente}}</td>
+                            <td>{{item.tipoAmbiente}}</td>
+                            <td>{{item.fecha}}</td>
+                            <td>{{item.ambiente}}</td>
+                            <td>{{item.motivo}}</td>
+                            <td>⋮</td>
+                        </tr>
+
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div> -->
+
+            <div class="botones botones-ctr">
+
+                <div class="boton boton-color-1" (click)="PruebaEnviarSolicitud()">
+                    <p>Enviar Solicitud</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="popup-tabla-horarios" *ngIf="popupTablaHorarios">
+
+        <div class="popup-header">
+
+            <div class="popup-titulo">
+                <ng-icon name="featherCalendar" />
+                <h3>Tabla Horaria</h3>
+            </div>
+
+            <div class="popup-cerrar" (click)="mostrarTablaHorarios(0)">
+                <ng-icon name="featherXCircle" />
+            </div>
+
+        </div>
+
+        <div class="campos-contenedor">
+
+            <table class="tabla-horarios">
+
+                <thead>
+                    <tr>
+                        <th>Hora Inicio</th>
+                        <th>Hora Fin</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @for (item of listaTablaHoraria; track $index) {
+
+                    <tr>
+                        <td>{{item.horA_INICIO}}</td>
+                        <td>{{item.horA_FIN}}</td>
+                        <td>
+                            <p [ngClass]="item.tipO_HORARIO == 'REGULAR' ? 'tabla-horarios-regular' : 'tabla-horarios-descanso' ">{{item.tipO_HORARIO}}</p>
+                        </td>
+                    </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+
+            <!--
+            <table class="tabla-horarios">
+
+                <thead>
+                    <tr>
+                        <th>Hora Inicio</th>
+                        <th>Hora Fin</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>07:00</td>
+                        <td>07:45</td>
+                        <td>
+                            <p style="background-color: rgb(0, 255, 128);">Disponible</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>07:45</td>
+                        <td>08:30</td>
+                        <td>
+                            <p style="background-color: rgb(255, 75, 75);">Ocupado</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>08:30</td>
+                        <td>09:15</td>
+                        <td>
+                            <p style="background-color: rgb(255, 75, 75);">Ocupado</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>09:15</td>
+                        <td>10:00</td>
+                        <td>
+                            <p style="background-color: rgb(255, 75, 75);">Ocupado</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>10:00</td>
+                        <td>10:45</td>
+                        <td>
+                            <p style="background-color: rgb(0, 255, 128);">Disponible</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>10:45</td>
+                        <td>11:30</td>
+                        <td>
+                            <p style="background-color: rgb(0, 255, 128);">Disponible</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>11:30</td>
+                        <td>12:15</td>
+                        <td>
+                            <p style="background-color: rgb(255, 75, 75);">Ocupado</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>12:15</td>
+                        <td>13:00</td>
+                        <td>
+                            <p style="background-color: rgb(0, 255, 128);">Disponible</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>13:00</td>
+                        <td>13:45</td>
+                        <td>
+                            <p style="background-color: rgb(0, 255, 128);">Disponible</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>13:45</td>
+                        <td>14:30</td>
+                        <td>
+                            <p style="background-color: rgb(0, 255, 128);">Disponible</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>14:30</td>
+                        <td>15:15</td>
+                        <td>
+                            <p style="background-color: rgb(0, 255, 128);">Disponible</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>15:15</td>
+                        <td>16:00</td>
+                        <td>
+                            <p style="background-color: rgb(0, 255, 128);">Disponible</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>16:00</td>
+                        <td>16:45</td>
+                        <td>
+                            <p style="background-color: rgb(255, 75, 75);">Ocupado</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>16:45</td>
+                        <td>17:30</td>
+                        <td>
+                            <p style="background-color: rgb(255, 75, 75);">Ocupado</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>17:30</td>
+                        <td>18:15</td>
+                        <td>
+                            <p style="background-color: rgb(0, 255, 128);">Disponible</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>18:15</td>
+                        <td>19:00</td>
+                        <td>
+                            <p style="background-color: rgb(0, 255, 128);">Disponible</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>19:00</td>
+                        <td>19:45</td>
+                        <td>
+                            <p style="background-color: rgb(0, 255, 128);">Disponible</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>19:45</td>
+                        <td>20:30</td>
+                        <td>
+                            <p style="background-color: rgb(0, 255, 128);">Disponible</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>20:30</td>
+                        <td>21:15</td>
+                        <td>
+                            <p style="background-color: rgb(0, 255, 128);">Disponible</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>21:15</td>
+                        <td>22:00</td>
+                        <td>
+                            <p style="background-color: rgb(0, 255, 128);">Disponible</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>22:00</td>
+                        <td>22:45</td>
+                        <td>
+                            <p style="background-color: rgb(255, 75, 75);">Ocupado</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>22:45</td>
+                        <td>23:30</td>
+                        <td>
+                            <p style="background-color: rgb(255, 75, 75);">Ocupado</p>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+            -->
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<p-toast position="top-right"></p-toast>
+

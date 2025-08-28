@@ -1,0 +1,13 @@
+
+
+.router-contenedor {
+    max-width: 150rem;
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 6rem;
+    min-height: calc(100dvh - 9rem);
+    /* margin-top: 6rem; */
+    /* margin-left: 20rem; */
+    /* background-color: red; */
+}
+

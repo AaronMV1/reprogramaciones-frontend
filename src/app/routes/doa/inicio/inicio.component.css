@@ -1,0 +1,243 @@
+
+
+.main {
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main > h2 {
+    text-align: center;
+    font-family: 'agenda-semibold';
+    font-size: 2.5rem;
+    color: #505050;
+    margin: 5rem 0;
+}
+
+
+/*  #region     VENTANA        */
+
+
+.ventana {
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    gap: .5rem;
+    background-color: white;
+    border-radius: 2rem;
+    box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.1);
+    padding: 5rem;
+}
+
+.ventana h2 {
+    font-size: 2.5rem;
+    font-family: 'agenda-semibold';
+    text-transform: uppercase;
+    color: #505050;
+}
+
+.ventana ng-icon {
+    font-size: 3rem;
+    color: #505050;
+}
+
+.ventana-header {
+    height: 4.8rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.ventana-header-titulo,
+.ventana-header-botones {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+}
+
+.ventana .separador {
+    height: 1px;
+    width: 100%;
+    background-color: #CCC;
+}
+
+
+/* #endregion */
+
+
+/*  #region     LISTA          */
+
+
+.lista {
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.lista-productos {
+    min-height: 31rem;
+    max-height: 31rem;
+    width: 100%;
+    overflow: auto;
+    border-radius: 1rem;
+    box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.lista-tabla {
+    min-width: 100%;
+    border-collapse: separate;
+    border-spacing: 0rem 0rem;
+    max-height: 5rem;
+}
+
+.lista-tabla thead th {
+    background-color: #FF0A41;
+    padding: 1rem;
+    color: white;
+    font-size: 1.5rem !important;
+}
+
+.lista-tabla thead th:nth-of-type(1),
+.lista-tabla thead th:nth-of-type(9) {
+    width: 5%;
+}
+
+.lista-tabla thead th:nth-of-type(2),
+.lista-tabla thead th:nth-of-type(4),
+.lista-tabla thead th:nth-of-type(6),
+.lista-tabla thead th:nth-of-type(7),
+.lista-tabla thead th:nth-of-type(8) {
+    width: 10%;
+}
+
+.lista-tabla thead th:nth-of-type(3),
+.lista-tabla thead th:nth-of-type(5) {
+    width: 20%;
+}
+
+.lista-tabla thead th,
+.lista-tabla tbody td {
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.lista-tabla tbody td {
+    height: 2.5rem;
+}
+
+.lista-tabla tbody tr:nth-child(even) td {
+    background-color: #EFEFEF !important;
+}
+
+.lista-tabla tbody tr:first-of-type td {
+    height: 3.5rem !important;
+    padding-top: 1rem !important;
+}
+
+.lista-tabla tbody tr:nth-of-type(1) td {
+    height: 3.5rem !important;
+    padding-top: 1rem !important;
+    padding-bottom: 0 !important;
+}
+
+.lista-tabla tbody tr:last-of-type td {
+    height: 3.5rem;
+    padding-bottom: 1rem;
+}
+
+.lista-tabla tbody tr td:last-of-type {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.lista-tabla tbody tr td:last-of-type p {
+    cursor: pointer;
+}
+
+.lista-tabla tbody tr ng-icon {
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+
+
+/*  #endregion  */
+
+
+.tabla-campos {
+    display: grid;
+    grid-template-columns: 30% 70%;
+    grid-template-rows: repeat(6, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 1rem;
+}
+
+.tabla-campos > *,
+.tabla-campo > * {
+    height: 3rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.tabla-campos > *:nth-of-type(even),
+.tabla-campo {
+    height: 3rem;
+    width: 100%;
+    border-radius: .5rem;
+    box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.05);
+    padding: 0 1rem;
+}
+
+.tabla-campos p,
+.tabla-campo p {
+    color: #AAA !important;
+    font-size: 1.5rem !important;
+}
+
+.tabla-campos-2 {
+    height: 3rem;
+    width: 100%;
+}
+
+.tabla-boton {
+    height: 3rem;
+    width: auto;
+    padding: 1.5rem 2rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    border-radius: .5rem;
+    gap: 1rem;
+    background-color: #808080;
+    cursor: pointer;
+}
+
+
+/*   */
+
+
+.campos-grid-6 {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2rem;
+    width: 100%;
+}

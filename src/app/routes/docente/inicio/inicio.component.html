@@ -1,0 +1,139 @@
+
+
+<div class="main">
+
+    <h2>REPROGRAMACIÓN DE CLASES</h2>
+
+    <div class="ventana">
+
+        <div class="ventana-header">
+
+            <div class="ventana-header-titulo">
+
+                <ng-icon name="featherFileText" />
+                <h2>Mis Solicitudes</h2>
+
+            </div>
+
+            <div class="ventana-header-botones">
+
+                <div class="boton boton-color-1" (click)="redirigirCalendario()">
+                    <ng-icon name="featherFilePlus"/>
+                    <p>Crear nueva solicitud</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="separador"></div>
+
+        <div class="lista">
+
+            <div class="campos">
+
+                <div class="campo-contenedor campo-contenedor-100">
+
+                    <div class="campo">
+
+                        <input type="text" placeholder="Buscar" [(ngModel)]="filtro" (input)="paginaActual = 1" />
+
+                        <div class="campo-icono">
+                            <ng-icon name="featherSearch" />
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="lista-productos">
+
+                <table class="lista-tabla">
+
+                    <thead>
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Semestre</th>
+                            <th>Programa</th>
+                            <th>Local</th>
+                            <th>Asignatura</th>
+                            <th>Componente</th>
+                            <th>Ambiente</th>
+                            <th>Fecha</th>
+                            <th>Motivo</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+                        
+                        @for (item of procedimientosPaginados; track $index) {
+
+                        <tr>
+                            <td>{{$index + 1}}</td>
+                            <td>{{item.semestre}}</td>
+                            <td>{{item.programa}}</td>
+                            <td>{{item.local}}</td>
+                            <td>{{item.asignatura}}</td>
+                            <td>{{item.componente}}</td>
+                            <td>{{item.tipoAmbiente + " " + item.ambiente}}</td>
+                            <td>{{item.fecha + " " + item.horaIni + "-" + item.horaFin}}</td>
+                            <td><p>⋮</p></td>
+                        </tr>
+
+                        }
+
+                    </tbody>
+
+                </table>
+
+                <div class="lista-tabla-vacio" *ngIf="procedimientosPaginados.length == 0">
+                    <p>No se encontraron resultados</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="paginador">
+
+            <div class="cambiar">
+
+                <button class="cambiar-paginador" (click)="cambiarPagina(paginaActual - 1)"
+                    [disabled]="paginaActual === 1">
+                    <ng-icon name="featherArrowLeft" />
+                </button>
+
+                <span>Página {{paginaActual}} de {{totalPaginas}}</span>
+
+                <button class="cambiar-paginador" (click)="cambiarPagina(paginaActual + 1)"
+                    [disabled]="paginaActual === totalPaginas">
+                    <ng-icon name="featherArrowRight" />
+                </button>
+
+            </div>
+
+            <div class="cantidad">
+
+                <label>Mostrar</label>
+
+                <select [(ngModel)]="itemsPorPagina" (change)="paginaActual = 1">
+                    <option [ngValue]="10">10</option>
+                    <option [ngValue]="20">20</option>
+                    <option [ngValue]="30">30</option>
+                    <option [ngValue]="40">40</option>
+                </select>
+
+                <span>por página</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
