@@ -291,10 +291,12 @@ export class CalendarioComponent implements OnInit {
                 Ambiente: ${evento.extendedProps.ambiente}  `
         );
 
-        this.popupFormularioIDCurso = evento.extendedProps.docente;
-        this.popupFormularioNoClase = evento.extendedProps.docente;
-        this.popupFormularioCompnte = evento.extendedProps.docente;
-        this.popupFormularioSesion = evento.extendedProps.docente;
+        console.log(evento.extendedProps);
+
+        this.popupFormularioIDCurso = evento.extendedProps.cursoID;
+        this.popupFormularioNoClase = evento.extendedProps.numeroClase;
+        this.popupFormularioCompnte = evento.extendedProps.componenteDesc;
+        this.popupFormularioSesion = evento.extendedProps.codigoSeccion;
 
         this.mostrarFormulario(1, evento);
 
@@ -422,6 +424,9 @@ export class CalendarioComponent implements OnInit {
                                 color: h.TIPO_CLASE === 'HorasLectivas' ? '#007bff' : '#28a745',
 
                                 extendedProps: {
+                                    cursoID: h.crsE_ID,
+                                    numeroClase: h.clasS_NBR,
+                                    codigoSeccion: h.sessioN_CODE,
                                     componente: h.ssR_COMPONENT,
                                     componenteDesc: h.descR_COMPONENTE,
                                     tipoAmbiente: h.facilitY_TYPE,
