@@ -27,19 +27,17 @@ export class CalendarioComponent implements OnInit {
 
 
     listaTablaHoraria: any[] = [];
-    listaAmbientesDispnibles: any[] = [];
+    listaAmbientesDisponibles: any[] = [];
     listaHorarioDocente: any[] = [];
     listaCursos: any[] = [];
 
 
+    listaValoresComponentes: any[] = [];
+    listaValoresAmbientes: any[] = [];
+
+
     primerDia: string = '';
     ultimoDia: string = '';
-
-
-    popupFormularioIDCurso: string = '';
-    popupFormularioNoClase: string = '';
-    popupFormularioCompnte: string = '';
-    popupFormularioSesion: string = '';
 
 
     isLoading = true;
@@ -97,7 +95,9 @@ export class CalendarioComponent implements OnInit {
 
         this.consultarHorarioDocente();
         this.consultarConfiguracionHorario();
-        this.consultarAmbientesDisponibles();
+        // this.consultarAmbientesDisponibles();
+        this.consultarValoresComponentes();
+        this.consultarValoresAmbientes();
 
     }
 
@@ -274,32 +274,88 @@ export class CalendarioComponent implements OnInit {
 
     }
 
+
+    popupFormularioCursoID: string = '';
+    popupFormularioNumeroClase: string = '';
+    popupFormularioCodigoSeccion: string = '';
+    popupFormularioComponente: string = '';
+    popupFormularioComponenteDesc: string = '';
+    popupFormularioAmbienteID: string = '';
+    popupFormularioTipoAmb: string = '';
+    popupFormularioTipoAmbiente: string = '';
+    popupFormularioUbicacion: string = '';
+    popupFormularioModelo: string = '';
+    popupFormularioAsignatura: string = '';
+    popupFormularioCantidadAlumnos: string = '';
+    popupFormularioDocenteNombre: string = '';
+    popupFormularioDocenteApPtrn: string = '';
+    popupFormularioDocenteApMtrn: string = '';
+    popupFormularioFecha: string = '';
+    popupFormularioHoraI: string = '';
+    popupFormularioHoraF: string = '';
+
+
     handleEventClick(info: any) {
 
 
         const evento = info.event;
 
 
-        alert(
-            `   Datos del evento:
-                Título: ${evento.title}
-                Inicio: ${evento.start?.toLocaleString('es-PE')}
-                Fin: ${evento.end?.toLocaleString('es-PE') || 'No especificado'}
-                Tipo: ${evento.extendedProps.tipoClase}
-                Docente: ${evento.extendedProps.docente}
-                Asignatura: ${evento.extendedProps.asignatura}
-                Ambiente: ${evento.extendedProps.ambiente}  `
-        );
+        console.log("Evento:\n\n", evento)
 
-        console.log(evento.extendedProps);
+        this.listaAmbientesDisponibles = []
 
-        this.popupFormularioIDCurso = evento.extendedProps.cursoID;
-        this.popupFormularioNoClase = evento.extendedProps.numeroClase;
-        this.popupFormularioCompnte = evento.extendedProps.componenteDesc;
-        this.popupFormularioSesion = evento.extendedProps.codigoSeccion;
+
+        // Obtener Tipo Ambiente
+        const ambiente = this.listaValoresAmbientes.filter((item: any) => item.VALOR_CAMPO === evento.extendedProps.tipoAmbiente);
+        const tipo_ambiente = ambiente[0].DESCR_CAMPO;
+
+
+        this.popupFormularioCursoID = evento.extendedProps.cursoID;
+        this.popupFormularioNumeroClase = evento.extendedProps.numeroClase;
+        this.popupFormularioCodigoSeccion = evento.extendedProps.codigoSeccion;
+        this.popupFormularioComponente = evento.extendedProps.componente;
+        this.popupFormularioComponenteDesc = evento.extendedProps.componenteDesc;
+        this.popupFormularioAmbienteID = evento.extendedProps.ambienteID;
+        this.popupFormularioTipoAmb = tipo_ambiente;
+        this.popupFormularioTipoAmbiente = evento.extendedProps.tipoAmbiente;
+        this.popupFormularioUbicacion = evento.extendedProps.ubicacion;
+        this.popupFormularioModelo = evento.extendedProps.modelo;
+        this.popupFormularioAsignatura = evento.extendedProps.asignatura;
+        this.popupFormularioCantidadAlumnos = evento.extendedProps.cantidadAlumnos;
+        this.popupFormularioDocenteNombre = evento.extendedProps.docenteNombre;
+        this.popupFormularioDocenteApPtrn = evento.extendedProps.docenteApPtrn;
+        this.popupFormularioDocenteApMtrn = evento.extendedProps.docenteApMtrn;
+        this.popupFormularioFecha = evento.extendedProps.fecha;
+        this.popupFormularioHoraI = evento.extendedProps.horaI;
+        this.popupFormularioHoraF = evento.extendedProps.horaF;
+
+
+        console.log("Curso ID:\t\t", this.popupFormularioCursoID);
+        console.log("Numero Clase:\t\t", this.popupFormularioNumeroClase);
+        console.log("Codigo Seccion:\t\t", this.popupFormularioCodigoSeccion);
+        console.log("Componente:\t\t", this.popupFormularioComponente);
+        console.log("Componente Desc:\t", this.popupFormularioComponenteDesc);
+        console.log("Ambiente ID:\t\t", this.popupFormularioAmbienteID)
+        console.log("Ambiente Tipo:\t\t", this.popupFormularioTipoAmbiente);
+        console.log("Ambiente Tipo Desc:\t", this.popupFormularioTipoAmb);
+        console.log("Ubicacion:\t\t", this.popupFormularioUbicacion);
+        console.log("Modelo:\t\t\t", this.popupFormularioModelo);
+        console.log("Asignatura:\t\t", this.popupFormularioAsignatura);
+        console.log("Cantidad Alumnos:\t", this.popupFormularioCantidadAlumnos);
+        console.log("Docente Nombre:\t\t", this.popupFormularioDocenteNombre);
+        console.log("Docente Ap.Pat:\t\t", this.popupFormularioDocenteApPtrn);
+        console.log("Docente Ap.Mat:\t\t", this.popupFormularioDocenteApMtrn);
+        console.log("Fecha:\t\t\t", this.popupFormularioFecha);
+        console.log("Hora Inicio:\t\t", this.popupFormularioHoraI);
+        console.log("Hora Fin:\t\t", this.popupFormularioHoraF);
+
 
         this.mostrarFormulario(1, evento);
 
+        this.campoFecha = "";
+        this.campoHoraIni = "";
+        this.campoHoraFin = "";
 
     }
 
@@ -424,21 +480,28 @@ export class CalendarioComponent implements OnInit {
                                 color: h.TIPO_CLASE === 'HorasLectivas' ? '#007bff' : '#28a745',
 
                                 extendedProps: {
+
                                     cursoID: h.crsE_ID,
                                     numeroClase: h.clasS_NBR,
                                     codigoSeccion: h.sessioN_CODE,
                                     componente: h.ssR_COMPONENT,
                                     componenteDesc: h.descR_COMPONENTE,
+                                    ambienteID: h.facilitY_ID,
                                     tipoAmbiente: h.facilitY_TYPE,
+                                    ubicacion: h.location,
+
+                                    modelo: h.stnD_MTG_PAT,
+
                                     asignatura: h.descr,
+                                    cantidadAlumnos: h.enrL_CAP,
                                     docenteNombre: h.firsT_NAME,
                                     docenteApPtrn: h.lasT_NAME,
                                     docenteApMtrn: h.seconD_LAST_NAME,
-                                    ambienteID: h.facilitY_ID,
+
                                     fecha: h.meetinG_DT,
                                     horaI: h.horA_INICIO,
                                     horaF: h.horA_FIN,
-                                    ubicacion: h.location,
+
                                 }
 
                             };
@@ -596,7 +659,7 @@ export class CalendarioComponent implements OnInit {
 
                 if (Array.isArray(tabla_horaria?.sjB_OBT_TABLA_HORARIA_RES)) {
 
-                    this.listaTablaHoraria = tabla_horaria.sjB_OBT_TABLA_HORARIA_RES;
+                    this.listaTablaHoraria = tabla_horaria.sjB_OBT_TABLA_HORARIA_RES.filter((item: any) => item.tipO_HORARIO === 'REGULAR');
 
                 } else {
 
@@ -616,12 +679,12 @@ export class CalendarioComponent implements OnInit {
 
 
         let req = {
-            "FechaInicio": "2025-03-06",
-            "FechaFinal": "2025-03-06",
-            "HoraInicioClase": "18.35",
-            "HoraFinClase": "20.05",
-            "TipoInstalacion": "LCRT",
-            "CodigoUbicacion": "L0034",
+            "FechaInicio": this.campoFecha,                         //  "2025-03-06"
+            "FechaFinal": this.campoFecha,                          //  "2025-03-06"
+            "HoraInicioClase": this.popupFormularioHoraI,           //  "18.35"
+            "HoraFinClase": this.popupFormularioHoraF,              //  "20.05"
+            "TipoInstalacion": this.popupFormularioTipoAmbiente,    //  "LCRT"
+            "CodigoUbicacion": this.popupFormularioUbicacion,       //  "L0034"
             "Domingo": "",
             "Lunes": "",
             "Martes": "",
@@ -647,19 +710,134 @@ export class CalendarioComponent implements OnInit {
 
                 if (Array.isArray(ambientes_disponibles?.sjB_OBT_DISP_AMBIENTE_RES)) {
 
-                    this.listaAmbientesDispnibles = ambientes_disponibles.sjB_OBT_DISP_AMBIENTE_RES;
+                    this.listaAmbientesDisponibles = ambientes_disponibles.sjB_OBT_DISP_AMBIENTE_RES;
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Ambientes Encontrados!',
+                        text: `Número de resultados: ${this.listaAmbientesDisponibles.length} ambientes`,
+                        allowOutsideClick: false,
+                        customClass: {
+                            popup: 'swal',
+                            icon: 'swal-icon',
+                            title: 'swal-title',
+                            htmlContainer: 'swal-text',
+                            confirmButton: 'swal-confirm-button',
+                            cancelButton: 'swal-cancel-button'
+                        }
+                    });
 
                 } else {
 
-                    this.listaAmbientesDispnibles = [];
+                    this.listaAmbientesDisponibles = [];
 
                 }
 
-                console.log("Ambientes Disponibles\n\n", this.listaAmbientesDispnibles);
+                console.log("Ambientes Disponibles\n\n", this.listaAmbientesDisponibles);
 
             }
 
         );
+
+    }
+
+    consultarValoresComponentes() {
+
+        this._http.get('/api/PSIGW/RESTListeningConnector/PSFT_CS/SJB_OBT_VALORES_XLAT.v1/VALORES/SSR_COMPONENT').subscribe(
+
+            (res) => {
+
+                const valores_componentes = res?.SJB_OBT_VALOR_XLAT_RESP;
+
+                if (Array.isArray(valores_componentes?.SJB_OBT_VALOR_XLAT_RES)) {
+
+                    this.listaValoresComponentes = valores_componentes.SJB_OBT_VALOR_XLAT_RES.filter((item: any) => item.ESTADO === 'A');
+
+                } else {
+
+                    this.listaValoresComponentes = [];
+
+                }
+
+                console.log("Componentes Valores\n\n", this.listaValoresComponentes);
+
+            }
+
+        );
+
+    }
+
+    consultarValoresAmbientes() {
+
+        this._http.get('/api/PSIGW/RESTListeningConnector/PSFT_CS/SJB_OBT_VALORES_XLAT.v1/VALORES/FACILITY_TYPE').subscribe(
+
+            (res) => {
+
+                const valores_ambientes = res?.SJB_OBT_VALOR_XLAT_RESP;
+
+                if (Array.isArray(valores_ambientes?.SJB_OBT_VALOR_XLAT_RES)) {
+
+                    this.listaValoresAmbientes = valores_ambientes.SJB_OBT_VALOR_XLAT_RES.filter((item: any) => item.ESTADO === 'A');
+
+                } else {
+
+                    this.listaValoresAmbientes = [];
+
+                }
+
+                console.log("Ambientes Valores\n\n", this.listaValoresAmbientes);
+
+            }
+
+        );
+
+    }
+
+    buscarAmbientesDisponibles() {
+
+        if (this.campoFecha.length == 0 || this.campoHoraIni.length == 0 || this.campoHoraFin.length == 0) {
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'Datos incompletos',
+                text: 'Agregue fecha y rango de hora en su búsqueda.',
+                allowOutsideClick: false,
+                customClass: {
+                    popup: 'swal',
+                    icon: 'swal-icon',
+                    title: 'swal-title',
+                    htmlContainer: 'swal-text',
+                    confirmButton: 'swal-confirm-button',
+                    cancelButton: 'swal-cancel-button'
+                }
+            });
+
+        } else {
+
+            if (this.campoHoraIni > this.campoHoraFin) {
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Error en el rango de horas',
+                    text: 'La hora inicio no puede ser mayor a hora fin.',
+                    allowOutsideClick: false,
+                    customClass: {
+                        popup: 'swal',
+                        icon: 'swal-icon',
+                        title: 'swal-title',
+                        htmlContainer: 'swal-text',
+                        confirmButton: 'swal-confirm-button',
+                        cancelButton: 'swal-cancel-button'
+                    }
+                });
+
+            } else {
+
+                this.consultarAmbientesDisponibles();
+
+            }
+
+        }
 
     }
 
@@ -677,16 +855,6 @@ export class CalendarioComponent implements OnInit {
     campoTipoAmbiente: string = '';
     campoAmbiente: string = '';
     campoMotivo: string = '';
-
-
-    campoAsignaturaVar: boolean = false;
-    campoComponenteVar: boolean = false;
-    campoFechaVar: boolean = false;
-    campoHoraIniVar: boolean = false;
-    campoHoraFinVar: boolean = false;
-    campoTipoAmbienteVar: boolean = false;
-    campoAmbienteVar: boolean = false;
-    campoMotivoVar: boolean = false;
 
 
     mostrarFormulario(val: any, val2: any) {

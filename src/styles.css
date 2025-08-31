@@ -50,6 +50,15 @@ html {
 
 .campos-grid:nth-of-type(1) .campo-contenedor-grid span {
     margin-left: .1rem;
+    font-weight: 700;
+    font-size: 1.4rem;
+}
+
+.campos-grid:nth-of-type(2) .campo-contenedor-grid:last-of-type > * > .campo-contenedor:nth-of-type(3) {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    gap: 1rem;
 }
 
 .campo-contenedor-grid {
@@ -218,6 +227,10 @@ html {
     font-size: 1.5rem;
     border-radius: 1rem;
     gap: 1rem;
+}
+
+.boton-buscar {
+    padding: 1.5rem .8rem;
 }
 
 .boton-wfijo {
