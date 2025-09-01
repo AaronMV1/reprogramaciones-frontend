@@ -35,7 +35,7 @@
 
             <div class="popup-titulo">
                 <ng-icon name="featherCalendar" />
-                <h3>Nueva Reprogramación - {{campoAsignatura}}</h3>
+                <h3>Nueva Reprogramación - {{popupFormularioAsignatura}}</h3>
             </div>
 
             <div class="popup-cerrar" (click)="mostrarFormulario(0, null)">
@@ -89,7 +89,7 @@
 
                     <div class="campo">
 
-                        <input type="date" [(ngModel)]="campoFecha" />
+                        <input type="date" [(ngModel)]="popupFormularioNuevaFecha" (change)="detectarCambioFechaHora()" />
 
                     </div>
 
@@ -105,7 +105,7 @@
 
                             <div class="campo">
 
-                                <select name="horas" id="horas" [(ngModel)]="campoHoraIni">
+                                <select name="horas" id="horas" [(ngModel)]="popupFormularioNuevaHoraI" (change)="detectarCambioFechaHora()">
 
                                     <option value="" disabled [selected]>HH:MM</option>
 
@@ -125,7 +125,7 @@
 
                             <div class="campo">
 
-                                <select name="horas" id="horas" [(ngModel)]="campoHoraFin">
+                                <select name="horas" id="horas" [(ngModel)]="popupFormularioNuevaHoraF" (change)="detectarCambioFechaHora()">
 
                                     <option value="" disabled [selected]>HH:MM</option>
 
@@ -163,10 +163,10 @@
 
                     <div class="campo">
 
-                        <select [(ngModel)]="campoAmbiente">
+                        <select [(ngModel)]="popupFormularioNuevoAmbienteID">
                             <option value="" disabled [selected]>Seleccione</option>
                             @for (item of listaAmbientesDisponibles; track $index) {
-                                <option value="">{{item.descr}} ({{item.rooM_CAPACITY}})</option>
+                                <option value="{{item.descr}}">{{item.descr}} ({{item.rooM_CAPACITY}})</option>
                             }
                         </select>
 
@@ -180,7 +180,7 @@
 
                     <div class="campo">
 
-                        <select [(ngModel)]="campoMotivo">
+                        <select [(ngModel)]="popupFormularioNuevoMotivo">
                             <option value="" disabled [selected]>Seleccione</option>
                             <option value="Causas externas">Causas externas</option>
                             <option value="Causas institucionales">Causas institucionales</option>
@@ -235,7 +235,7 @@
 
             <div class="botones botones-ctr">
 
-                <div class="boton boton-color-1" (click)="PruebaEnviarSolicitud()">
+                <div class="boton boton-color-1" (click)="EnviarSolicitud()">
                     <p>Enviar Solicitud</p>
                 </div>
 

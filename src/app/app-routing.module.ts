@@ -15,6 +15,7 @@ import { MsalGuard } from '@azure/msal-angular';
 import { CatchaComponent } from './routes/test/catcha/catcha.component';
 import { CalendarioComponent } from './routes/docente/calendario/calendario.component';
 import { ConfiguracionComponent } from './routes/doa/configuracion/configuracion.component';
+import { ModalComponent } from './routes/aplicacion/modal/modal.component';
 
 
 const routes: Routes = [
@@ -36,6 +37,11 @@ const routes: Routes = [
             title: 'Redireccionando...',
         },
         canActivate: [MsalGuard],
+    },
+
+    {
+        path: 'modal',
+        component: ModalComponent
     },
 
     {

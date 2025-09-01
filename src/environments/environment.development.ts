@@ -32,7 +32,7 @@ export const environment = {
     // initialAuth: '',                                     // 'KATTY.PALOMINO@UPSJB.EDU.PE',//'me@upsjb.edu.pe',
 
 
-    initialAuth: 'jesusa.mori@upsjb.edu.pe',
+    initialAuth: 'christian.mori@upsjb.edu.pe',
 
 
 };

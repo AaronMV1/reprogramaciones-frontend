@@ -29,6 +29,7 @@ import { ConfiguracionComponent } from './doa/configuracion/configuracion.compon
 
 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ModalComponent } from './aplicacion/modal/modal.component';
 
 
 @NgModule({
@@ -36,11 +37,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     declarations: [
         LoginComponent,
         MsalComponent,
+        ModalComponent,
         DoaInicioComponent,
         DocenteInicioComponent,
         CalendarioComponent,
         CatchaComponent,
         ConfiguracionComponent,
+        ModalComponent,
     ],
 
     imports: [
@@ -61,6 +64,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     exports: [
         LoginComponent,
         MsalComponent,
+        ModalComponent,
         DoaInicioComponent,
         DocenteInicioComponent,
     ],

@@ -79,6 +79,32 @@ export class CalendarioComponent implements OnInit {
     ];
 
 
+    popupFormularioCursoID: string = '';
+    popupFormularioNumeroClase: string = '';
+    popupFormularioCodigoSeccion: string = '';
+    popupFormularioComponente: string = '';
+    popupFormularioComponenteDesc: string = '';
+    popupFormularioAmbienteID: string = '';
+    popupFormularioTipoAmb: string = '';
+    popupFormularioTipoAmbiente: string = '';
+    popupFormularioUbicacion: string = '';
+    popupFormularioModelo: string = '';
+    popupFormularioPrograma: string = '';
+    popupFormularioAsignatura: string = '';
+    popupFormularioCantidadAlumnos: string = '';
+    popupFormularioDocenteNombre: string = '';
+    popupFormularioDocenteApPtrn: string = '';
+    popupFormularioDocenteApMtrn: string = '';
+    popupFormularioFecha: string = '';
+    popupFormularioHoraI: string = '';
+    popupFormularioHoraF: string = '';
+
+    popupFormularioNuevaFecha: string = '';
+    popupFormularioNuevaHoraI: string = '';
+    popupFormularioNuevaHoraF: string = '';
+    popupFormularioNuevoAmbienteID: string = '';
+    popupFormularioNuevoMotivo: string = '';
+
 
     constructor(
         public _http: HttpService,
@@ -274,27 +300,6 @@ export class CalendarioComponent implements OnInit {
 
     }
 
-
-    popupFormularioCursoID: string = '';
-    popupFormularioNumeroClase: string = '';
-    popupFormularioCodigoSeccion: string = '';
-    popupFormularioComponente: string = '';
-    popupFormularioComponenteDesc: string = '';
-    popupFormularioAmbienteID: string = '';
-    popupFormularioTipoAmb: string = '';
-    popupFormularioTipoAmbiente: string = '';
-    popupFormularioUbicacion: string = '';
-    popupFormularioModelo: string = '';
-    popupFormularioAsignatura: string = '';
-    popupFormularioCantidadAlumnos: string = '';
-    popupFormularioDocenteNombre: string = '';
-    popupFormularioDocenteApPtrn: string = '';
-    popupFormularioDocenteApMtrn: string = '';
-    popupFormularioFecha: string = '';
-    popupFormularioHoraI: string = '';
-    popupFormularioHoraF: string = '';
-
-
     handleEventClick(info: any) {
 
 
@@ -321,6 +326,7 @@ export class CalendarioComponent implements OnInit {
         this.popupFormularioTipoAmbiente = evento.extendedProps.tipoAmbiente;
         this.popupFormularioUbicacion = evento.extendedProps.ubicacion;
         this.popupFormularioModelo = evento.extendedProps.modelo;
+        this.popupFormularioPrograma = evento.extendedProps.programa;
         this.popupFormularioAsignatura = evento.extendedProps.asignatura;
         this.popupFormularioCantidadAlumnos = evento.extendedProps.cantidadAlumnos;
         this.popupFormularioDocenteNombre = evento.extendedProps.docenteNombre;
@@ -341,6 +347,7 @@ export class CalendarioComponent implements OnInit {
         console.log("Ambiente Tipo Desc:\t", this.popupFormularioTipoAmb);
         console.log("Ubicacion:\t\t", this.popupFormularioUbicacion);
         console.log("Modelo:\t\t\t", this.popupFormularioModelo);
+        console.log("Programa:\t\t\t", this.popupFormularioPrograma);
         console.log("Asignatura:\t\t", this.popupFormularioAsignatura);
         console.log("Cantidad Alumnos:\t", this.popupFormularioCantidadAlumnos);
         console.log("Docente Nombre:\t\t", this.popupFormularioDocenteNombre);
@@ -353,9 +360,11 @@ export class CalendarioComponent implements OnInit {
 
         this.mostrarFormulario(1, evento);
 
-        this.campoFecha = "";
-        this.campoHoraIni = "";
-        this.campoHoraFin = "";
+        this.popupFormularioNuevaFecha = "";
+        this.popupFormularioNuevaHoraI = "";
+        this.popupFormularioNuevaHoraF = "";
+        this.popupFormularioNuevoAmbienteID = "";
+        this.popupFormularioNuevoMotivo = "";
 
     }
 
@@ -491,6 +500,7 @@ export class CalendarioComponent implements OnInit {
                                     ubicacion: h.location,
 
                                     modelo: h.stnD_MTG_PAT,
+                                    programa: h.sjB_DESCR_ESCUELA,
 
                                     asignatura: h.descr,
                                     cantidadAlumnos: h.enrL_CAP,
@@ -679,8 +689,8 @@ export class CalendarioComponent implements OnInit {
 
 
         let req = {
-            "FechaInicio": this.campoFecha,                         //  "2025-03-06"
-            "FechaFinal": this.campoFecha,                          //  "2025-03-06"
+            "FechaInicio": this.popupFormularioNuevaFecha,                         //  "2025-03-06"
+            "FechaFinal": this.popupFormularioNuevaFecha,                          //  "2025-03-06"
             "HoraInicioClase": this.popupFormularioHoraI,           //  "18.35"
             "HoraFinClase": this.popupFormularioHoraF,              //  "20.05"
             "TipoInstalacion": this.popupFormularioTipoAmbiente,    //  "LCRT"
@@ -795,7 +805,7 @@ export class CalendarioComponent implements OnInit {
 
     buscarAmbientesDisponibles() {
 
-        if (this.campoFecha.length == 0 || this.campoHoraIni.length == 0 || this.campoHoraFin.length == 0) {
+        if (this.popupFormularioNuevaFecha.length == 0 || this.popupFormularioNuevaHoraI.length == 0 || this.popupFormularioNuevaHoraF.length == 0) {
 
             Swal.fire({
                 icon: 'warning',
@@ -814,7 +824,7 @@ export class CalendarioComponent implements OnInit {
 
         } else {
 
-            if (this.campoHoraIni > this.campoHoraFin) {
+            if (this.popupFormularioNuevaHoraI > this.popupFormularioNuevaHoraF) {
 
                 Swal.fire({
                     icon: 'warning',
@@ -847,16 +857,6 @@ export class CalendarioComponent implements OnInit {
     popupTablaHorarios: boolean = false;
 
 
-    campoAsignatura: string = '';
-    campoComponente: string = '';
-    campoFecha: string = '';
-    campoHoraIni: string = '';
-    campoHoraFin: string = '';
-    campoTipoAmbiente: string = '';
-    campoAmbiente: string = '';
-    campoMotivo: string = '';
-
-
     mostrarFormulario(val: any, val2: any) {
 
         if (val == 1) {
@@ -864,14 +864,14 @@ export class CalendarioComponent implements OnInit {
             this.popup = true;
             this.popupFormulario = true;
 
-            this.campoAsignatura = val2.title;
+            this.popupFormularioAsignatura = val2.title;
 
-            // this.campoHoraFin = val2.start.toLocaleDateString('es-PE'); 
+            // this.popupFormularioNuevaHoraF = val2.start.toLocaleDateString('es-PE'); 
 
             // const dia = val2.start.getDate().toString().padStart(2, '0');
             // const mes = (val2.start.getMonth() + 1).toString().padStart(2, '0'); // los meses empiezan en 0
             // const anio = val2.start.getFullYear();
-            // this.campoHoraIni = `${dia}-${mes}-${anio}`;
+            // this.popupFormularioNuevaHoraI = `${dia}-${mes}-${anio}`;
 
 
         } else if (val == 0) {
@@ -906,36 +906,71 @@ export class CalendarioComponent implements OnInit {
     //#region       FUNCIONES DE PRUEBA
 
 
-    PruebaEnviarSolicitud() {
+    EnviarSolicitud() {
+
+
+        if (this.popupFormularioNuevoAmbienteID.length == 0 || this.popupFormularioNuevoMotivo.length == 0) {
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'Falta seleccionar ambiente y motivo',
+                text: 'Seleccione un ambiente disponible y motivo de reprogramación para enviar su solicitud.',
+                allowOutsideClick: false,
+                customClass: {
+                    popup: 'swal',
+                    icon: 'swal-icon',
+                    title: 'swal-title',
+                    htmlContainer: 'swal-text',
+                    confirmButton: 'swal-confirm-button',
+                    cancelButton: 'swal-cancel-button'
+                }
+            });
+
+            return;
+
+        }
+
 
         let plantilla = `
 
-            <div style="height: 39rem; width: 30rem; background-color: white; margin: 0 auto; display: flex; flex-direction: column; position: relative; box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.1);">
+            <div style="height: auto; width: 30rem; background-color: white; margin: 40px auto; display: flex; flex-direction: column; position: relative; box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.1);">
 
-                <img src="assets/img/imagenes/plantilla-correo.png" alt="" style="width: 100%;">
+                <div style="background-color: #FF0A41; width: 100%; height: 12rem; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+                    <img src="https://backdev-campus.upsjb.edu.pe/reprogramacion-clases/assets/img/correo/correo-banner.png" alt="" style="height: 100%; width: 100%; border: none;">
+                    <!-- <h2 style="font-family: calibri; color: white; font-size: 1.5rem;">Reprogramación de Clases</h2> -->
+                    
+                </div>
 
                 <div style="flex: 1; padding: 1rem 2rem; font-size: .8rem; font-family: calibri;">
+
                     <h4>Estimado(a) Docente Melendez Donayre Eric Joel</h4>
                     <p style="text-align: justify;">Le informamos que se ha realizado una reprogramación en una de sus asignaturas del presente semestre. A continuación, se detallan los cambios efectuados:</p>
 
                     <ul>
-                        <li>Programa: Medicina Humana</li>
-                        <li>Asignatura: Seminario Integrador I</li>
-                        <li>Fecha: 20/06/2025</li>
-                        <li>Hora: 10:00am - 11:00pm</li>
+                        <li>Programa: ` + this.popupFormularioPrograma + `</li>
+                        <li>Asignatura: ` + this.popupFormularioAsignatura + `</li>
+                        <li>Componente: ` + this.popupFormularioComponenteDesc + `</li>
+                        <li>Fecha: ${this.formatearFecha(this.popupFormularioNuevaFecha)}</li>
+                        <li>Hora: ${this.formatearHora(this.popupFormularioNuevaHoraI)} - ${this.formatearHora(this.popupFormularioNuevaHoraF)}</li>
                         <li>Local: Chorrillos</li>
-                        <li>Ambiente: Aula 204 - Pabellón B</li>
+                        <li>Ambiente: ` + this.popupFormularioNuevoAmbienteID + `</li>
                     </ul>
 
                     <p>Esta reprogramación responde a necesidades académicas y logísticas con el fin de garantizar el desarrollo óptimo de la clase.</p>
 
                     <p>Atentamente,</p>
                     <p style="font-weight: 700;">Universidad Privada San Juan Bautista</p>
+
                 </div>
 
-                <div style="position: absolute; bottom: 0; left: 0; background-color: #FF0A41; width: 100%; height: 4rem;"></div>
+                <div style="position: absolute; bottom: 0; left: 0; background-color: #FF0A41; width: 100%; height: 4rem;">
 
-            </div>        
+                    <img src="https://mailing.upsjb.edu.pe/hs-fs/hubfs/FOOTER-Apr-30-2024-08-34-22-0239-PM.png?width=1200&upscale=true&name=FOOTER-Apr-30-2024-08-34-22-0239-PM.png" alt="" style="height: 100%; width: 100%;">
+
+                </div>
+
+            </div>
             
         `;
 
@@ -953,10 +988,36 @@ export class CalendarioComponent implements OnInit {
 
                 alert('Solicitud Enviada!');
                 console.log(res);
+
             }
 
         )
 
+    }
+
+
+    //#endregion
+
+
+    //#region       UTILIDADES
+
+
+    formatearFecha(fechaISO: string): string {
+        if (!fechaISO) return '';
+        const [year, month, day] = fechaISO.split('-');
+        return `${day}/${month}/${year}`;
+    }
+
+    formatearHora(hora: string): string {
+        if (!hora) return '';
+        let [h, m] = hora.split('.');
+        if (!m) m = '00';
+        return `${h.padStart(2, '0')}:${m.padStart(2, '0')}`;
+    }
+
+    detectarCambioFechaHora() {
+        this.popupFormularioNuevoAmbienteID = '';
+        this.popupFormularioNuevoMotivo = '';
     }
 
 

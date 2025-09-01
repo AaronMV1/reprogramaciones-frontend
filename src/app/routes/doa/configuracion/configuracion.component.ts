@@ -25,6 +25,7 @@ export class ConfiguracionComponent implements OnInit {
     popupUsuarioApellidos = '';
     popupUsuarioCorreo = '';
     popupUsuarioPerfil = '';
+    popupUsuarioPrograma = '';
     popupUsuarioBusqueda = '';
 
 
@@ -33,7 +34,8 @@ export class ConfiguracionComponent implements OnInit {
     checkboxDocente: boolean = false;
     checkboxAlumno: boolean = false;
     checkboxDOA: boolean = false;
-    checkboxCoordinador: boolean = false;
+    checkboxCoordinadorPrograma: boolean = false;
+    checkboxCoordinadorAmbiente: boolean = false;
 
 
     constructor(
@@ -68,7 +70,8 @@ export class ConfiguracionComponent implements OnInit {
                 this.checkboxDocente = res.lista[0].correoDocente;
                 this.checkboxAlumno = res.lista[0].correoAlumno;
                 this.checkboxDOA = res.lista[0].correoDOA;
-                this.checkboxCoordinador = res.lista[0].correoCoordinador;
+                this.checkboxCoordinadorPrograma = res.lista[0].correoCoordinadorPrograma;
+                this.checkboxCoordinadorAmbiente = res.lista[0].correoCoordinadorAmbiente;
 
             }
 
@@ -84,7 +87,8 @@ export class ConfiguracionComponent implements OnInit {
             correoDocente: this.checkboxDocente,
             correoAlumno: this.checkboxAlumno,
             correoDOA: this.checkboxDOA,
-            correoCoordinador: this.checkboxCoordinador
+            correoCoordinadorPrograma: this.checkboxCoordinadorPrograma,
+            correoCoordinadorAmbiente: this.checkboxCoordinadorAmbiente
         }
 
         this._http.post(req, 'actualizar-configuracion').subscribe(
@@ -175,11 +179,14 @@ export class ConfiguracionComponent implements OnInit {
 
         } else {
 
+            this.popupUsuarioPerfil != 'Coordinador de Programa' ? this.popupUsuarioPrograma = '' : null;
+
             let req = {
                 nombres: this.popupUsuarioNombres,
                 apellidos: this.popupUsuarioApellidos,
-                perfil: this.popupUsuarioPerfil,
                 correo: this.popupUsuarioCorreo,
+                perfil: this.popupUsuarioPerfil,
+                programa: this.popupUsuarioPrograma,
                 usuarioResponsable: "12345"
             }
 
@@ -193,8 +200,9 @@ export class ConfiguracionComponent implements OnInit {
 
                         this.popupUsuarioNombres = '';
                         this.popupUsuarioApellidos = '';
-                        this.popupUsuarioPerfil = '';
                         this.popupUsuarioCorreo = '';
+                        this.popupUsuarioPerfil = '';
+                        this.popupUsuarioPrograma = '';
 
                         Swal.fire({
 
@@ -219,8 +227,9 @@ export class ConfiguracionComponent implements OnInit {
 
                         this.popupUsuarioNombres = '';
                         this.popupUsuarioApellidos = '';
-                        this.popupUsuarioPerfil = '';
                         this.popupUsuarioCorreo = '';
+                        this.popupUsuarioPerfil = '';
+                        this.popupUsuarioPrograma = '';
 
                         Swal.fire({
 
@@ -290,11 +299,14 @@ export class ConfiguracionComponent implements OnInit {
 
         } else {
 
+            this.popupUsuarioPerfil != 'Coordinador de Programa' ? this.popupUsuarioPrograma = '' : null;
+
             let req = {
                 nombres: this.popupUsuarioNombres,
                 apellidos: this.popupUsuarioApellidos,
+                correo: this.popupUsuarioCorreo,
                 perfil: this.popupUsuarioPerfil,
-                correo: this.popupUsuarioCorreo
+                programa: this.popupUsuarioPrograma,
             }
 
             this._http.post(req, 'actualizar-usuario').subscribe(
@@ -393,8 +405,9 @@ export class ConfiguracionComponent implements OnInit {
 
                         this.popupUsuarioNombres = '';
                         this.popupUsuarioApellidos = '';
-                        this.popupUsuarioPerfil = '';
                         this.popupUsuarioCorreo = '';
+                        this.popupUsuarioPerfil = '';
+                        this.popupUsuarioPrograma = '';
 
                         Swal.fire({
 
@@ -449,7 +462,8 @@ export class ConfiguracionComponent implements OnInit {
         this.checkboxDocente = true;
         this.checkboxAlumno = true;
         this.checkboxDOA = false;
-        this.checkboxCoordinador = false;
+        this.checkboxCoordinadorPrograma = true;
+        this.checkboxCoordinadorAmbiente = false;
 
     }
 
@@ -504,6 +518,7 @@ export class ConfiguracionComponent implements OnInit {
         this.popupUsuarioApellidos = item.apellidos;
         this.popupUsuarioCorreo = item.correo;
         this.popupUsuarioPerfil = item.perfil;
+        this.popupUsuarioPrograma = item.programa;
     }
 
 

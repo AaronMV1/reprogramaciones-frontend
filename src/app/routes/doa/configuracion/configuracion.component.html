@@ -72,8 +72,11 @@
                     </label>
 
                     <label>
-                        <input type="checkbox" name="coordinador" [(ngModel)]="checkboxCoordinador">Coordinador de
-                        Ambiente
+                        <input type="checkbox" name="coordinadorPrograma" [(ngModel)]="checkboxCoordinadorPrograma">Coordinador de Programa
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="coordinadorAmbiente" [(ngModel)]="checkboxCoordinadorAmbiente">Coordinador de Ambiente
                     </label>
 
                 </div>
@@ -130,7 +133,7 @@
 
         <div class="campos">
 
-            <div class="campo-contenedor campo-contenedor-25">
+            <div class="campo-contenedor campo-contenedor-33">
 
                 <label for="" class="label label-obligatorio">Nombres</label>
 
@@ -140,7 +143,7 @@
 
             </div>
 
-            <div class="campo-contenedor campo-contenedor-25">
+            <div class="campo-contenedor campo-contenedor-33">
 
                 <label for="" class="label label-obligatorio">Apellidos</label>
 
@@ -152,7 +155,7 @@
 
             </div>
 
-            <div class="campo-contenedor campo-contenedor-25">
+            <div class="campo-contenedor campo-contenedor-33">
 
                 <label for="" class="label label-obligatorio">Correo</label>
 
@@ -164,7 +167,13 @@
 
             </div>
 
-            <div class="campo-contenedor campo-contenedor-25">
+            
+
+        </div>
+
+        <div class="campos">
+
+            <div class="campo-contenedor campo-contenedor-33">
 
                 <label for="" class="label label-obligatorio">Perfil</label>
 
@@ -174,6 +183,7 @@
                         <option value="" selected="true" disabled="disabled" hidden="true">Seleccione una opción</option>
                         <option value="Docente">Docente</option>
                         <option value="DOA">DOA</option>
+                        <option value="Coordinador de Programa">Coordinador de Programa</option>
                         <option value="Coordinador de Ambiente">Coordinador de Ambiente</option>
                     </select>
 
@@ -181,38 +191,33 @@
 
             </div>
 
-        </div>
+            <div class="campo-contenedor campo-contenedor-33">
 
-        <div class="campos">
+                @if (popupUsuarioPerfil == 'Coordinador de Programa') {
 
-            <div class="campo-contenedor campo-contenedor-25">
+                <label for="" class="label label-obligatorio">Programa</label>
 
-                <div class="boton boton-color-1" (click)="registrarUsuario()">
-                    <ng-icon name="featherPlus"></ng-icon>
-                    <p>Agregar</p>
+                <div class="campo">
+
+                    <select name="" [(ngModel)]="popupUsuarioPrograma">
+                        <option value="" selected="true" disabled="disabled" hidden="true">Seleccione una opción</option>
+                        <option value="Medicina Humana">Medicina Humana</option>
+                        <option value="Psicología">Psicología</option>
+                        <option value="Arquitectura">Arquitectura</option>
+                        <option value="Derecho">Derecho</option>
+                        <option value="Administración de Empresas">Administración de Empresas</option>
+                        <option value="Ingeniería de Sistemas">Ingeniería de Sistemas</option>
+                        <option value="Ingeniería Industrial">Ingeniería Industrial</option>
+                        <option value="Ingeniería Civil">Ingeniería Civil</option>
+                    </select>
+
                 </div>
+
+                }
 
             </div>
 
-            <div class="campo-contenedor campo-contenedor-25">
-
-                <div class="boton boton-color-1" (click)="actualizarUsuario()">
-                    <ng-icon name="featherArrowUp"></ng-icon>
-                    <p>Actualizar</p>
-                </div>
-
-            </div>
-
-            <div class="campo-contenedor campo-contenedor-25">
-
-                <div class="boton boton-color-1" (click)="eliminarUsuario()">
-                    <ng-icon name="featherX"></ng-icon>
-                    <p>Eliminar</p>
-                </div>
-
-            </div>
-
-            <div class="campo-contenedor campo-contenedor-25">
+            <div class="campo-contenedor campo-contenedor-33">
 
                 <div class="campo">
 
@@ -222,6 +227,37 @@
 
             </div>
 
+
+        </div>
+
+        <div class="campos campos-botones">
+
+            <div class="campo-contenedor campo-contenedor-33">
+
+                <div class="boton boton-color-1" (click)="registrarUsuario()">
+                    <ng-icon name="featherPlus"></ng-icon>
+                    <p>Agregar</p>
+                </div>
+
+            </div>
+
+            <div class="campo-contenedor campo-contenedor-33">
+
+                <div class="boton boton-color-1" (click)="actualizarUsuario()">
+                    <ng-icon name="featherArrowUp"></ng-icon>
+                    <p>Actualizar</p>
+                </div>
+
+            </div>
+
+            <div class="campo-contenedor campo-contenedor-33">
+
+                <div class="boton boton-color-1" (click)="eliminarUsuario()">
+                    <ng-icon name="featherX"></ng-icon>
+                    <p>Eliminar</p>
+                </div>
+
+            </div>
 
         </div>
 
@@ -235,6 +271,7 @@
                         <th>Apellidos</th>
                         <th>Correo</th>
                         <th>Perfil</th>
+                        <th>Programa</th>
                     </tr>
                 </thead>
 
@@ -247,6 +284,7 @@
                         <td>{{item.apellidos}}</td>
                         <td>{{item.correo}}</td>
                         <td>{{item.perfil}}</td>
+                        <td>{{item.programa}}</td>
                     </tr>
 
                     }
@@ -257,7 +295,7 @@
 
         </div>
 
-        <p>• Para eliminar o modificar una cuenta es necesario ingresar el correo electrónico asociado.</p>
+        <p>• Para actualizar o eliminar una cuenta es necesario ingresar el correo electrónico asociado.</p>
 
     </div>
 
