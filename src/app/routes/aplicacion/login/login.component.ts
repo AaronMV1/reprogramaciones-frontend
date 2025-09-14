@@ -26,7 +26,7 @@ export class LoginComponent {
     login() {
         localStorage.clear();
         sessionStorage.clear();
-        this._router.navigate(['/inicio']);
+        this._router.navigate(['/inicio'], { replaceUrl: true });
     }
 
 }

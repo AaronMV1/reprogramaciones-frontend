@@ -60,23 +60,23 @@
                     <label for="">Gestión de notificaciones por correo:</label>
 
                     <label>
-                        <input type="checkbox" name="docente" [(ngModel)]="checkboxDocente">Docente
-                    </label>
-
-                    <label>
-                        <input type="checkbox" name="alumno" [(ngModel)]="checkboxAlumno">Alumno
-                    </label>
-
-                    <label>
                         <input type="checkbox" name="doa" [(ngModel)]="checkboxDOA">DOA
                     </label>
 
                     <label>
-                        <input type="checkbox" name="coordinadorPrograma" [(ngModel)]="checkboxCoordinadorPrograma">Coordinador de Programa
+                        <input type="checkbox" name="docente" [(ngModel)]="checkboxDocente" disabled="true" checked="true">Docente
                     </label>
 
                     <label>
-                        <input type="checkbox" name="coordinadorAmbiente" [(ngModel)]="checkboxCoordinadorAmbiente">Coordinador de Ambiente
+                        <input type="checkbox" name="alumno" [(ngModel)]="checkboxAlumno" disabled="true" checked="true">Alumno
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="coordinadorPrograma" [(ngModel)]="checkboxCoordinadorPrograma" disabled="true" checked="false">Coordinador de Programa
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="coordinadorAmbiente" [(ngModel)]="checkboxCoordinadorAmbiente" disabled="true" checked="false">Coordinador de Ambiente
                     </label>
 
                 </div>
@@ -183,8 +183,8 @@
                         <option value="" selected="true" disabled="disabled" hidden="true">Seleccione una opción</option>
                         <option value="Docente">Docente</option>
                         <option value="DOA">DOA</option>
-                        <option value="Coordinador de Programa">Coordinador de Programa</option>
-                        <option value="Coordinador de Ambiente">Coordinador de Ambiente</option>
+                        <option value="Coordinador de Programa" disabled="true">Coordinador de Programa</option>
+                        <option value="Coordinador de Ambiente" disabled="true">Coordinador de Ambiente</option>
                     </select>
 
                 </div>

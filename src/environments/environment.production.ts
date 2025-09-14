@@ -6,7 +6,7 @@ export const environment = {
     production: true,
 
 
-    ClientId: '10570380-15e6-48ee-9277-8c5d17dc19ee',   //https://app.upsjb.edu.pe/reprogramaciones
+    ClientId: '518ad021-0e1d-41b2-b070-3b964e426a27',   //https://app.upsjb.edu.pe/reprogramaciones
     TenantId: '13841d5f-968d-4624-a7da-d68a6006a84a',   
 
 

@@ -14,6 +14,9 @@ import Swal from 'sweetalert2';
 export class InicioComponent implements OnInit {
 
 
+    sesionListaPerfil: any[] = [];
+
+
     listaSolicitudes: any[] = [];
     listaEstados: any[] = [];
     listaSolicitudDetalle: any = [];
@@ -43,6 +46,11 @@ export class InicioComponent implements OnInit {
 
 
     ngOnInit(): void {
+
+        const perfilGuardado = sessionStorage.getItem('perfil');
+        this.sesionListaPerfil = perfilGuardado ? JSON.parse(perfilGuardado) : [];
+
+        // console.log(this.sesionListaPerfil);
 
         this.llamarSolicitudes();
 

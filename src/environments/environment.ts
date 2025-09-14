@@ -22,9 +22,12 @@ export const environment = {
 
 
     ENDPOINTS: {
-        API_SERVICIOS:      '',
-        API_PERSONA:        'xd',
-        API_PERSONA_KEY:    'ss'
+        API_SERVICIOS_LOCAL:    'http://localhost:8080/',
+        API_SERVICIOS_1:        'https://app.upsjb.edu.pe/reprogramaciones/',
+        API_SERVICIOS_2:        'https://api.upsjb.edu.pe/reprogramaciones/',
+        API_SERVICIOS_3:        'https://backdev-campus.upsjb.edu.pe/apisIntegracionesReprogramacionClases/',
+        API_PERSONA:            'https://app.upsjb.edu.pe/apisIntegracionesAcademico/',
+        API_PERSONA_KEY:        'UTdFZStJaWd6ekJ6eW5OQ2dOOU83ZEluTWpheXlEWklrQk0rekN2WWlGRT0=',
     },
 
 

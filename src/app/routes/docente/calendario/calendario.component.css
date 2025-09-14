@@ -37,7 +37,6 @@ full-calendar {
 .leyenda {
     display: flex;
     flex-direction: column;
-    margin-top: 2rem;
     padding: 2rem;
     background-color: #e3e3e3;
     width: max-content !important;
@@ -155,5 +154,40 @@ full-calendar {
 
 .tabla-registro tbody tr td:last-of-type {
     cursor: pointer;
+}
+
+
+.loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 600;
+    color: white;
+    font-size: 2.5rem;
+}
+
+.contenedor-opciones {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: start;
+    width: 100%;
+    gap: 3rem;
+    margin-top: 2rem;
+}
+
+.campo-grado {
+    height: 4rem;
+    width: 15rem;
+    border: none;
+    border-radius: 1rem;
+    padding: 0 1rem;
 }
 

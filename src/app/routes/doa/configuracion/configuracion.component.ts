@@ -4,6 +4,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpService } from '../../../core/services/http.service';
 import Swal from 'sweetalert2';
+import { environment } from '../../../../environments/environment';
 
 
 @Component({
@@ -46,7 +47,6 @@ export class ConfiguracionComponent implements OnInit {
 
     ngOnInit(): void {
 
-        this.consultarListaUsuarios();
         this.consultarConfiguracion();
 
     }
@@ -59,9 +59,32 @@ export class ConfiguracionComponent implements OnInit {
         this._router.navigate(['/u/doa/inicio']);
     }
 
+    restablecerPredeterminados() {
+
+        this.limiteClase = 2;
+        this.plazoMaximo = 7;
+        this.checkboxDocente = true;
+        this.checkboxAlumno = true;
+        this.checkboxDOA = false;
+        this.checkboxCoordinadorPrograma = false;
+        this.checkboxCoordinadorAmbiente = false;
+
+    }
+
+
+    //#endregion
+
+
+    //#region       SERVICIOS
+
+
     consultarConfiguracion() {
 
-        this._http.get('consultar-configuracion').subscribe(
+
+        let baseKey: keyof typeof environment.ENDPOINTS = 'API_SERVICIOS_LOCAL';
+
+
+        this._http.get(baseKey, 'consultar-configuracion').subscribe(
 
             (res) => {
 
@@ -77,10 +100,15 @@ export class ConfiguracionComponent implements OnInit {
 
         )
 
+
     }
 
     actualizarConfiguracion() {
 
+
+        let baseKey: keyof typeof environment.ENDPOINTS = 'API_SERVICIOS_LOCAL';
+
+        
         let req = {
             limiteReprogramaciones: this.limiteClase,
             plazoMaximo: this.plazoMaximo,
@@ -91,7 +119,8 @@ export class ConfiguracionComponent implements OnInit {
             correoCoordinadorAmbiente: this.checkboxCoordinadorAmbiente
         }
 
-        this._http.post(req, 'actualizar-configuracion').subscribe(
+
+        this._http.post(req, baseKey, 'actualizar-configuracion').subscribe(
 
             (res) => {
 
@@ -145,7 +174,11 @@ export class ConfiguracionComponent implements OnInit {
 
     consultarListaUsuarios() {
 
-        this._http.get('consultar-lista-usuarios').subscribe(
+
+        let baseKey: keyof typeof environment.ENDPOINTS = 'API_SERVICIOS_LOCAL';
+
+
+        this._http.get(baseKey, 'consultar-lista-usuarios').subscribe(
 
             (res) => {
                 this.listaUsuarios = [...res.lista];
@@ -153,6 +186,7 @@ export class ConfiguracionComponent implements OnInit {
             }
 
         )
+
 
     }
 
@@ -179,7 +213,12 @@ export class ConfiguracionComponent implements OnInit {
 
         } else {
 
+
             this.popupUsuarioPerfil != 'Coordinador de Programa' ? this.popupUsuarioPrograma = '' : null;
+
+
+            let baseKey: keyof typeof environment.ENDPOINTS = 'API_SERVICIOS_LOCAL';
+
 
             let req = {
                 nombres: this.popupUsuarioNombres,
@@ -190,7 +229,8 @@ export class ConfiguracionComponent implements OnInit {
                 usuarioResponsable: "12345"
             }
 
-            this._http.post(req, 'registrar-usuario').subscribe(
+
+            this._http.post(req, baseKey, 'registrar-usuario').subscribe(
 
                 (res) => {
 
@@ -299,7 +339,12 @@ export class ConfiguracionComponent implements OnInit {
 
         } else {
 
+
             this.popupUsuarioPerfil != 'Coordinador de Programa' ? this.popupUsuarioPrograma = '' : null;
+
+
+            let baseKey: keyof typeof environment.ENDPOINTS = 'API_SERVICIOS_LOCAL';
+
 
             let req = {
                 nombres: this.popupUsuarioNombres,
@@ -309,7 +354,8 @@ export class ConfiguracionComponent implements OnInit {
                 programa: this.popupUsuarioPrograma,
             }
 
-            this._http.post(req, 'actualizar-usuario').subscribe(
+
+            this._http.post(req, baseKey, 'actualizar-usuario').subscribe(
 
                 (res) => {
 
@@ -391,11 +437,16 @@ export class ConfiguracionComponent implements OnInit {
 
         } else {
 
+
+            let baseKey: keyof typeof environment.ENDPOINTS = 'API_SERVICIOS_LOCAL';
+
+
             let req = {
                 correo: this.popupUsuarioCorreo
             }
 
-            this._http.post(req, 'eliminar-usuario').subscribe(
+
+            this._http.post(req, baseKey, 'eliminar-usuario').subscribe(
 
                 (res) => {
 
@@ -455,18 +506,6 @@ export class ConfiguracionComponent implements OnInit {
 
     }
 
-    restablecerPredeterminados() {
-
-        this.limiteClase = 2;
-        this.plazoMaximo = 7;
-        this.checkboxDocente = true;
-        this.checkboxAlumno = true;
-        this.checkboxDOA = false;
-        this.checkboxCoordinadorPrograma = true;
-        this.checkboxCoordinadorAmbiente = false;
-
-    }
-
 
     //#endregion
 
@@ -498,6 +537,7 @@ export class ConfiguracionComponent implements OnInit {
 
 
     abrirPopup(tipo: 'usuarios') {
+        this.consultarListaUsuarios();
         this.popupActivo = tipo;
     }
 

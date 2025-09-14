@@ -13,6 +13,6 @@ footer {
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
-    z-index: 100;
+    z-index: 10000;
 }
 

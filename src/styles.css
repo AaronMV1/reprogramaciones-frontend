@@ -365,7 +365,7 @@ html {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
+    z-index: 500;
 }
 
 .popup-formulario,
@@ -749,11 +749,12 @@ fc-button {
 }
 
 .fc-event {
-    background-color: #007bff !important;
+    /* background-color: #007bff !important; */
     border: none;
     border-radius: 1rem;
-    padding: 1.2rem .5rem;
+    padding: 1.2rem 1.2rem;
     color: red !important;
+    cursor: pointer;
 }
 
 .fc-event-time {

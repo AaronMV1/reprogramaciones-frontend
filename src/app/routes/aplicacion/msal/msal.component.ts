@@ -21,7 +21,7 @@ import { InformacionPersona, InformacionPersonaAcademica } from '../../../core/e
 export class MsalComponent implements OnInit, AfterViewInit {
 
 
-    listaPerfil: any [] = [];
+    sesionListaPerfil: any[] = [];
 
 
     usuario = {
@@ -43,7 +43,8 @@ export class MsalComponent implements OnInit, AfterViewInit {
     ) { this.consultarPerfilUsuario(); }
 
 
-    ngOnInit(): void { 
+    ngOnInit(): void {
+
 
     }
 
@@ -57,6 +58,9 @@ export class MsalComponent implements OnInit, AfterViewInit {
 
 
     private async consultarPerfilUsuario() {
+
+
+        let baseKey: keyof typeof environment.ENDPOINTS = 'API_SERVICIOS_LOCAL';
 
 
         const req = {
@@ -73,20 +77,24 @@ export class MsalComponent implements OnInit, AfterViewInit {
 
         this._http.postInformacion(req, 'api/v1/integracion/academico/obtener-informacion-persona', headers).subscribe({
 
+
             next: (res1: InformacionPersona) => {
+
 
                 if (res1.result.resultado === 'OK') {
 
+                    
                     let req2 = {
                         correo: this._settingsService.obtenerEmailUsuario()
                     }
 
-                    this._http.post(req2, 'http://localhost:8080/login-consultar-usuario').subscribe(
+
+                    this._http.post(req2, baseKey, 'login-consultar-usuario').subscribe(
 
                         (res2) => {
 
                             this.crearPerfilStorage(res1, res2);
-                            
+
                         }
 
                     )
@@ -121,6 +129,7 @@ export class MsalComponent implements OnInit, AfterViewInit {
 
         let pfApellidos, pfNombres, pfCorreo, pfCorreo2, pfPerfil, pfPrograma;
 
+
         pfApellidos = res2.lista[0].apellidos;
         pfNombres = res2.lista[0].nombres;
         pfCorreo = res2.lista[0].correo;
@@ -129,21 +138,33 @@ export class MsalComponent implements OnInit, AfterViewInit {
         pfPrograma = res2.lista[0].programa;
 
 
-        if (pfPerfil === 'DOA') {
-
-            this._router.navigate(['/u/doa/inicio']);
-
-        } else if (pfPerfil === 'Docente') {
-
-            this._router.navigate(['/u/docente/inicio']);
-
-        } else {
-
-            this._router.navigate(['/modal']);
-
+        const perfil = {
+            apellidos: pfApellidos,
+            nombres: pfNombres,
+            correo: pfCorreo,
+            correo2: pfCorreo2,
+            perfil: pfPerfil,
+            programa: pfPrograma,
         }
+
+
+        this.sesionListaPerfil.push(perfil);
+
+
+        sessionStorage.setItem('perfil', JSON.stringify(this.sesionListaPerfil));
+
+
+        if (pfPerfil === 'DOA') {
+            this._router.navigate(['/u/doa/inicio'], { replaceUrl: true });
+        } else if (pfPerfil === 'Docente') {
+            this._router.navigate(['/u/docente/inicio'], { replaceUrl: true });
+        } else {
+            this._router.navigate(['/modal'], { replaceUrl: true });
+        }
+
 
 
     }
 
+    
 }

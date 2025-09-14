@@ -18,11 +18,11 @@ export class HttpService {
     constructor(private http: HttpClient) { }
 
 
-    public get(collection: string): Observable<any> {
+    public get(baseKey: keyof typeof environment.ENDPOINTS, collection: string): Observable<any> {
 
 
         const isFullUrl = collection.startsWith('http') || collection.startsWith('/api');
-        const url = isFullUrl ? collection : environment.ENDPOINTS.API_SERVICIOS + collection;
+        const url = isFullUrl ? collection : environment.ENDPOINTS[baseKey] + collection;
 
 
         const httpOptions = {
@@ -35,22 +35,19 @@ export class HttpService {
 
         return this.http.get<any[]>(url, httpOptions).pipe(
 
-            tap((data: any) => {
-
-            }),
-
+            tap((data: any) => { }),
             catchError(err => {
-                throw 'Error in source. Details: ' + err;
+                throw 'Error in GET. Details: ' + err;
             }),
 
         );
 
     }
 
-    public getWithHeaders(collection: string, customHeaders: { [header: string]: string }): Observable<any> {
+    public getWithHeaders(baseKey: keyof typeof environment.ENDPOINTS, collection: string, customHeaders: { [header: string]: string }): Observable<any> {
 
         const isFullUrl = collection.startsWith('http') || collection.startsWith('/api');
-        const url = isFullUrl ? collection : environment.ENDPOINTS.API_SERVICIOS + collection;
+        const url = isFullUrl ? collection : environment.ENDPOINTS[baseKey] + collection;
 
         const httpOptions = {
             headers: new HttpHeaders({
@@ -61,24 +58,24 @@ export class HttpService {
 
         return this.http.get<any>(url, httpOptions).pipe(
 
-            tap((data: any) => {
-                
-            }),
-
+            tap((data: any) => { }),
             catchError(err => {
-                throw 'Error in source. Details: ' + err;
+                throw 'Error in POST with headers. Details: ' + err;
             }),
 
         );
         
     }
 
-    public post(req: any, collection: string): Observable<any> {
+    public post(req: any, baseKey: keyof typeof environment.ENDPOINTS, collection: string): Observable<any> {
+
 
         const jsonrequest = JSON.stringify(req);
 
+
         const isFullUrl = collection.startsWith('http');
-        const url = isFullUrl ? collection : environment.ENDPOINTS.API_SERVICIOS + collection;
+        const url = isFullUrl ? collection : environment.ENDPOINTS[baseKey] + collection;
+
 
         const httpOptions = {
             headers: new HttpHeaders({
@@ -86,26 +83,27 @@ export class HttpService {
             }),
         };
 
+
         return this.http.post<any>(url, jsonrequest, httpOptions).pipe(
 
-            tap((data: any) => {
-
-            }),
-
+            tap((data: any) => { }),
             catchError(err => {
-                throw 'Error in source. Details: ' + err;
+                throw 'Error in POST. Details: ' + err;
             }),
 
         );
 
     }
 
-    public postWithHeaders(req: any, collection: string, customHeaders: { [header: string]: string }): Observable<any> {
+    public postWithHeaders(req: any, baseKey: keyof typeof environment.ENDPOINTS, collection: string, customHeaders: { [header: string]: string }): Observable<any> {
+
 
         const jsonrequest = JSON.stringify(req);
 
+
         const isFullUrl = collection.startsWith('http');
-        const url = isFullUrl ? collection : environment.ENDPOINTS.API_SERVICIOS + collection;
+        const url = isFullUrl ? collection : environment.ENDPOINTS[baseKey] + collection;
+
 
         const httpOptions = {
             headers: new HttpHeaders({
@@ -114,14 +112,12 @@ export class HttpService {
             }),
         };
 
+
         return this.http.post<any>(url, jsonrequest, httpOptions).pipe(
 
-            tap((data: any) => {
-
-            }),
-
+            tap((data: any) => { }),
             catchError(err => {
-                throw 'Error in source. Details: ' + err;
+                throw 'Error in POST with headers. Details: ' + err;
             }),
 
         );

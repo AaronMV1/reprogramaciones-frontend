@@ -4,6 +4,11 @@
 </div> -->
 
 
+<div class="loading" *ngIf="loading">
+    <h2>Espere...</h2>
+</div>
+
+
 <div class="contenedor">
 
     <h2>REPROGRAMACIÓN DE CLASES</h2>
@@ -11,15 +16,28 @@
     <div class="calendario-contenedor">
 
         <div class="calendario">
-            <full-calendar [options]="calendarOptions" (eventDrop)="handleEventDrop($event)">
+            <full-calendar [options]="calendarOptions">     <!-- (eventDrop)="handleEventDrop($event)" -->
                 <div class="mensaje">Nuevo</div>
             </full-calendar>
         </div>
 
-        <div class="leyenda" (click)="consultarAmbientesDisponibles()">
-            <h3>Leyenda:</h3>
-            <p>Clase</p>
-            <p>Clase Reprogramada</p>
+        <div class="contenedor-opciones">
+
+            <div class="leyenda" (click)="consultarAmbientesDisponibles()">
+                <h3>Leyenda:</h3>
+                <p>Clase</p>
+                <p>Clase Reprogramada</p>
+            </div>
+
+            <select class="campo-grado" [(ngModel)]="tablaGrado">
+                <option value="" disabled selected>Seleccione</option>
+                <option value="PREG">Pregrado</option>
+            </select>
+
+            <div class="campo-grado" style="background-color: #FF0A41;">
+                <p>Buscar</p>
+            </div>
+
         </div>
 
     </div>
@@ -35,7 +53,7 @@
 
             <div class="popup-titulo">
                 <ng-icon name="featherCalendar" />
-                <h3>Nueva Reprogramación - {{popupFormularioAsignatura}}</h3>
+                <h3>{{popupFormularioAsignatura}} ({{popupFormularioPrograma}})</h3>
             </div>
 
             <div class="popup-cerrar" (click)="mostrarFormulario(0, null)">
@@ -45,15 +63,22 @@
         </div>
 
         <div class="campos-contenedor">
+            
 
             <div class="campos-grid">
 
-                <div class="campo-contenedor-grid">ID Curso:                <span>{{popupFormularioCursoID}}</span></div>
-                <div class="campo-contenedor-grid">N° Clase:                <span>{{popupFormularioNumeroClase}}</span></div>
-                <div class="campo-contenedor-grid">Sesión:                  <span>{{popupFormularioCodigoSeccion}}</span></div>
-                <div class="campo-contenedor-grid">Modelo:                  <span>{{popupFormularioModelo}}</span></div>
-                <div class="campo-contenedor-grid">Ambiente:                <span>{{popupFormularioAmbienteID}}</span></div>
-                <div class="campo-contenedor-grid">Cantidad de Alumnos:     <span>{{popupFormularioCantidadAlumnos}}</span></div>
+                <div class="campo-contenedor-grid">ID Curso:            <span>{{popupFormularioCursoID}}</span></div>
+                <div class="campo-contenedor-grid">N° Clase:            <span>{{popupFormularioNumeroClase}}</span></div>
+                <div class="campo-contenedor-grid">N° Campus:           <span>{{popupFormularioNumeroCampusMTG}}</span></div>
+                <div class="campo-contenedor-grid">Sesión:              <span>{{popupFormularioCodigoSeccion}}</span></div>
+                <div class="campo-contenedor-grid">Modelo de clase:     <span>{{popupFormularioModelo}}</span></div>
+                <div class="campo-contenedor-grid">Ambiente:            <span>{{popupFormularioAmbienteID}}</span></div>
+                <div class="campo-contenedor-grid">Alumnos Matriculados:<span>{{popupFormularioCantidadAlumnos}}</span></div>
+                <div class="campo-contenedor-grid"></div>
+                <div class="campo-contenedor-grid">Fecha:               <span>{{popupFormularioFecha | date: 'dd-MM-yyyy'}}</span></div>
+                <div class="campo-contenedor-grid">Hora Inicio:         <span>{{formatearHora(popupFormularioHoraI)}}</span></div>
+                <div class="campo-contenedor-grid">Hora Fin:            <span>{{formatearHora(popupFormularioHoraF)}}</span></div>
+                <div class="campo-contenedor-grid">Tiempo:              <span>1 hora 30 minutos</span></div>
 
             </div>
 
@@ -89,7 +114,7 @@
 
                     <div class="campo">
 
-                        <input type="date" [(ngModel)]="popupFormularioNuevaFecha" (change)="detectarCambioFechaHora()" />
+                        <input type="date" [(ngModel)]="popupFormularioNuevaFecha" (change)="detectarCambioFechaHora($event)" [min]="minDate" [max]="maxDate" />
 
                     </div>
 
@@ -105,12 +130,12 @@
 
                             <div class="campo">
 
-                                <select name="horas" id="horas" [(ngModel)]="popupFormularioNuevaHoraI" (change)="detectarCambioFechaHora()">
+                                <select [(ngModel)]="popupFormularioNuevaHoraI" (change)="detectarCambioHoraInicio($event)">
 
-                                    <option value="" disabled [selected]>HH:MM</option>
-
+                                    <option value="" disabled selected>HH:MM</option>
+                                    
                                     @for (item of listaTablaHoraria; track $index) {
-                                    <option value="{{item.horA_INICIO}}">{{item.horA_INICIO}}</option>
+                                        <option [value]="item.horA_INICIO">{{ item.horA_INICIO }}</option>
                                     }
 
                                 </select>
@@ -125,12 +150,12 @@
 
                             <div class="campo">
 
-                                <select name="horas" id="horas" [(ngModel)]="popupFormularioNuevaHoraF" (change)="detectarCambioFechaHora()">
+                                <select [(ngModel)]="popupFormularioNuevaHoraF" (change)="detectarCambioHoraInicio($event)">
 
-                                    <option value="" disabled [selected]>HH:MM</option>
+                                    <option value="" disabled selected>HH:MM</option>
 
                                     @for (item of listaTablaHoraria; track $index) {
-                                    <option value="{{item.horA_FIN}}">{{item.horA_FIN}}</option>
+                                        <option [value]="item.horA_FIN" [disabled]="horaFinValida !== item.horA_FIN">{{ item.horA_FIN }}</option>
                                     }
 
                                 </select>
@@ -142,7 +167,9 @@
                         <div class="campo-contenedor campo-contenedor-20">
 
                             <div class="boton boton-color-1 boton-buscar" (click)="this.buscarAmbientesDisponibles()">
+
                                 <ng-icon name="featherSearch" />
+                                
                             </div>
 
                         </div>
@@ -164,10 +191,13 @@
                     <div class="campo">
 
                         <select [(ngModel)]="popupFormularioNuevoAmbienteID">
+
                             <option value="" disabled [selected]>Seleccione</option>
+
                             @for (item of listaAmbientesDisponibles; track $index) {
                                 <option value="{{item.descr}}">{{item.descr}} ({{item.rooM_CAPACITY}})</option>
                             }
+
                         </select>
 
                     </div>
@@ -235,7 +265,7 @@
 
             <div class="botones botones-ctr">
 
-                <div class="boton boton-color-1" (click)="EnviarSolicitud()">
+                <div class="boton boton-color-1" (click)="enviarSolicitud()">
                     <p>Enviar Solicitud</p>
                 </div>
 
@@ -280,9 +310,7 @@
                         <td>{{item.horA_INICIO}}</td>
                         <td>{{item.horA_FIN}}</td>
                         <td>
-                            <p
-                                [ngClass]="item.tipO_HORARIO == 'REGULAR' ? 'tabla-horarios-regular' : 'tabla-horarios-descanso' ">
-                                {{item.tipO_HORARIO}}</p>
+                            <p [ngClass]="item.tipO_HORARIO == 'REGULAR' ? 'tabla-horarios-regular' : 'tabla-horarios-descanso' ">{{item.tipO_HORARIO}}</p>
                         </td>
                     </tr>
 
