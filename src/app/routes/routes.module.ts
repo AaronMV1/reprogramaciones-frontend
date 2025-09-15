@@ -9,7 +9,7 @@ import { InicioComponent as DocenteInicioComponent } from './docente/inicio/inic
 
 
 import { NgIconsModule } from '@ng-icons/core';
-import { featherEye, featherFileText, featherSearch, featherArrowLeft, featherArrowRight, featherCalendar, featherXCircle, featherClock, featherUpload, featherFilePlus, featherSettings, featherSave, featherUsers, featherPlusCircle, featherPlus, featherX, featherArrowUp, featherRotateCcw, featherFilter } from '@ng-icons/feather-icons';
+import { featherEye, featherFileText, featherSearch, featherArrowLeft, featherArrowRight, featherCalendar, featherXCircle, featherClock, featherUpload, featherFilePlus, featherSettings, featherSave, featherUsers, featherPlusCircle, featherPlus, featherX, featherArrowUp, featherRotateCcw, featherFilter, featherLayers } from '@ng-icons/feather-icons';
 import { LoginComponent } from './aplicacion/login/login.component';
 import { MsalComponent } from './aplicacion/msal/msal.component';
 import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
@@ -58,7 +58,7 @@ import { ModalComponent } from './aplicacion/modal/modal.component';
         MessageModule,
         ToastModule,
         MatProgressSpinnerModule,
-        NgIconsModule.withIcons({ featherFileText, featherSearch, featherEye, featherArrowLeft, featherArrowRight, featherCalendar, featherXCircle, featherClock, featherUpload, featherFilePlus, featherSettings, featherSave, featherUsers, featherPlus, featherX, featherArrowUp, featherRotateCcw, featherFilter  }),
+        NgIconsModule.withIcons({ featherFileText, featherSearch, featherEye, featherArrowLeft, featherArrowRight, featherCalendar, featherXCircle, featherClock, featherUpload, featherFilePlus, featherSettings, featherSave, featherUsers, featherPlus, featherX, featherArrowUp, featherRotateCcw, featherFilter, featherLayers  }),
     ],
 
     exports: [

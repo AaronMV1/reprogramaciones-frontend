@@ -23,7 +23,7 @@
 
         <div class="contenedor-opciones">
 
-            <div class="leyenda" (click)="consultarAmbientesDisponibles()">
+            <div class="leyenda">
                 <h3>Leyenda:</h3>
                 <p>Clase</p>
                 <p>Clase Reprogramada</p>
@@ -31,10 +31,14 @@
 
             <select class="campo-grado" [(ngModel)]="tablaGrado">
                 <option value="" disabled selected>Seleccione</option>
-                <option value="PREG">Pregrado</option>
+
+                @for (item of listaSemestre; track $index) {
+                    <option value="{{item.codigoGrado}}|{{item.codigoSemestre}}">{{item.grado}}</option>
+                }
+
             </select>
 
-            <div class="campo-grado" style="background-color: #FF0A41;">
+            <div class="boton-grado" (click)="consultarHorarioDocente()">
                 <p>Buscar</p>
             </div>
 

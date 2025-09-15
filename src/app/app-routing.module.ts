@@ -75,11 +75,17 @@ const routes: Routes = [
                         component: CalendarioComponent
                     }
                 ]
+
             }
 
         ],
         canActivate: [MsalGuard],
-    }
+    },
+
+    {
+        path: '**',
+        component: LoginComponent
+    },
 
 ];
 

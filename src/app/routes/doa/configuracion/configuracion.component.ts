@@ -18,6 +18,7 @@ import { environment } from '../../../../environments/environment';
 export class ConfiguracionComponent implements OnInit {
 
 
+    listaSemestre: any[] = [];
     listaUsuarios: any[] = [];
     usuariosFiltrados: any[] = [];
 
@@ -28,6 +29,14 @@ export class ConfiguracionComponent implements OnInit {
     popupUsuarioPerfil = '';
     popupUsuarioPrograma = '';
     popupUsuarioBusqueda = '';
+
+
+    popupSemestreGrado: string = '';
+    popupSemestreCodGrado: string = '';
+    popupSemestreSemestre: string = '';
+    popupSemestreCodSemestre: string = '';
+    popupSemestreFInicio: string = '';
+    popupSemestreFCierre: string = '';
 
 
     limiteClase: any = '';
@@ -48,6 +57,7 @@ export class ConfiguracionComponent implements OnInit {
     ngOnInit(): void {
 
         this.consultarConfiguracion();
+        this.consultarConfiguracionSemestre();
 
     }
 
@@ -108,7 +118,7 @@ export class ConfiguracionComponent implements OnInit {
 
         let baseKey: keyof typeof environment.ENDPOINTS = 'API_SERVICIOS_LOCAL';
 
-        
+
         let req = {
             limiteReprogramaciones: this.limiteClase,
             plazoMaximo: this.plazoMaximo,
@@ -506,6 +516,116 @@ export class ConfiguracionComponent implements OnInit {
 
     }
 
+    consultarConfiguracionSemestre() {
+
+        let baseKey: keyof typeof environment.ENDPOINTS = 'API_SERVICIOS_LOCAL';
+
+        this._http.get(baseKey, 'consultar-configuracion-semestre').subscribe(
+
+            (res) => {
+
+                console.log(res.lista)
+                this.listaSemestre = [...res.lista];
+                console.log(this.listaSemestre)
+
+            }
+
+        )
+
+    }
+
+    actualizarConfiguracionSemestre() {
+
+        if (!this.popupSemestreSemestre || !this.popupSemestreCodSemestre || !this.popupSemestreFInicio || !this.popupSemestreFCierre) {
+
+            Swal.fire({
+                icon: 'warning',
+                title: '¡Campos Vacíos!',
+                text: 'Por favor, complete todos los campos requeridos.',
+                allowOutsideClick: false,
+                customClass: {
+                    popup: 'swal',
+                    icon: 'swal-icon',
+                    title: 'swal-title',
+                    htmlContainer: 'swal-text',
+                    confirmButton: 'swal-confirm-button',
+                    cancelButton: 'swal-cancel-button'
+                }
+            });
+
+            return;
+
+        } else {
+
+            
+            let baseKey: keyof typeof environment.ENDPOINTS = 'API_SERVICIOS_LOCAL';
+
+
+            let req = {
+                grado: this.popupSemestreGrado,
+                codigoGrado: this.popupSemestreCodGrado,
+                semestre: this.popupSemestreSemestre,
+                codigoSemestre: this.popupSemestreCodSemestre,
+                fechaInicio: this.normalizarFecha(this.popupSemestreFInicio),
+                fechaCierre: this.normalizarFecha(this.popupSemestreFCierre),
+                usuarioModificacion: "Usuario Modificacion",
+            }
+
+
+            this._http.post(req, baseKey, 'actualizar-configuracion-semestre').subscribe(
+
+                (res) => {
+
+                    if (res.estado == "Success") {
+
+                        this.consultarConfiguracionSemestre();
+
+                        Swal.fire({
+
+                            icon: 'success',
+                            title: '¡Semestre Actualizado!',
+                            text: 'El semestre ha sido actualizado correctamente',
+                            allowOutsideClick: false,
+                            customClass: {
+                                popup: 'swal',
+                                icon: 'swal-icon',
+                                title: 'swal-title',
+                                htmlContainer: 'swal-text',
+                                confirmButton: 'swal-confirm-button',
+                                cancelButton: 'swal-cancel-button'
+                            }
+
+                        });
+
+                    } else {
+
+                        Swal.fire({
+
+                            icon: 'error',
+                            title: '¡Error al Actualizar!',
+                            text: 'Ocurrió un error al actualizar el semestre',
+                            allowOutsideClick: false,
+                            customClass: {
+                                popup: 'swal',
+                                icon: 'swal-icon',
+                                title: 'swal-title',
+                                htmlContainer: 'swal-text',
+                                confirmButton: 'swal-confirm-button',
+                                cancelButton: 'swal-cancel-button'
+                            }
+
+                        });
+
+                    }
+                        
+                }
+
+            )
+
+        }
+
+    }
+
 
     //#endregion
 
@@ -533,16 +653,41 @@ export class ConfiguracionComponent implements OnInit {
     //#region       VENTANAS
 
 
-    popupActivo: 'usuarios' | null = null;
+    popupActivo: 'usuarios' | 'semestre' | null = null;
 
 
-    abrirPopup(tipo: 'usuarios') {
-        this.consultarListaUsuarios();
+    abrirPopup(tipo: 'usuarios' | 'semestre') {
+
+        if (tipo === 'usuarios') {
+            this.consultarListaUsuarios();
+        }
+
+        if (tipo === 'semestre') {
+            // this.consultarConfiguracionSemestre(); // aquí llamas lo que necesites
+        }
+
         this.popupActivo = tipo;
+
     }
 
     cerrarPopup() {
+
         this.popupActivo = null;
+
+        this.popupUsuarioNombres = '';
+        this.popupUsuarioApellidos = '';
+        this.popupUsuarioCorreo = '';
+        this.popupUsuarioPerfil = '';
+        this.popupUsuarioPrograma = '';
+        this.popupUsuarioBusqueda = '';
+
+        this.popupSemestreGrado = '';
+        this.popupSemestreCodGrado = '';
+        this.popupSemestreSemestre = '';
+        this.popupSemestreCodSemestre = '';
+        this.popupSemestreFInicio = '';
+        this.popupSemestreFCierre = '';
+
     }
 
 
@@ -559,6 +704,28 @@ export class ConfiguracionComponent implements OnInit {
         this.popupUsuarioCorreo = item.correo;
         this.popupUsuarioPerfil = item.perfil;
         this.popupUsuarioPrograma = item.programa;
+    }
+
+    copiarSemestreDatos(item: any) {
+        this.popupSemestreGrado = item.grado;
+        this.popupSemestreCodGrado = item.codigoGrado;
+        this.popupSemestreSemestre = item.semestre;
+        this.popupSemestreCodSemestre = item.codigoSemestre;
+        this.popupSemestreFInicio = item.fechaInicio;
+        this.popupSemestreFCierre = item.fechaCierre;
+    }
+
+    normalizarFecha(fecha: string): string {
+
+        if (!fecha) return '';
+        const d = new Date(fecha);
+
+        d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
+
+        d.setDate(d.getDate() + 1);
+
+        return d.toISOString().split('T')[0];
+
     }
 
 

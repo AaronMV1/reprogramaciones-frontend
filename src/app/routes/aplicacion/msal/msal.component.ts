@@ -75,6 +75,7 @@ export class MsalComponent implements OnInit, AfterViewInit {
         };
 
 
+
         this._http.postInformacion(req, 'api/v1/integracion/academico/obtener-informacion-persona', headers).subscribe({
 
 

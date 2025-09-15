@@ -52,6 +52,7 @@ export class CalendarioComponent implements OnInit {
     listaValoresComponentes: any[] = [];
     listaValoresAmbientes: any[] = [];
     listaCorreoCopia: any[] = [];
+    listaSemestre: any[] = [];
 
 
     //  VARIABLES DE CONFIGURACION
@@ -117,6 +118,7 @@ export class CalendarioComponent implements OnInit {
         this.consultarConfiguracionHorario();
         this.consultarValoresComponentes();
         this.consultarValoresAmbientes();
+        this.consultarConfiguracionSemestre();
 
     }
 
@@ -228,20 +230,7 @@ export class CalendarioComponent implements OnInit {
                 text: '↺',
                 click: () => {
 
-                    if (this.tablaGrado) {
-
-                        this.consultarHorarioDocente();
-
-                    }
-
-                    else {
-
-                        this.messageService.add({
-                            severity: 'warn',
-                            detail: 'Seleccione un grado'
-                        });
-
-                    }
+                    this.consultarHorarioDocente();
 
                 }
 
@@ -642,124 +631,148 @@ export class CalendarioComponent implements OnInit {
     consultarHorarioDocente() {
 
 
-        let baseKey: keyof typeof environment.ENDPOINTS = 'API_SERVICIOS_3';
+        if (!this.tablaGrado) {
 
 
-        let req = {
-            "institucion": "UPSJB",
-            "gradoAcademico": this.tablaGrado,
-            "semestre": "2251",
-            "codigoAlumno": "1000151224",
-            "fechaInicio": this.primerDia,
-            "fechaFinal": this.ultimoDia
-        }
+            this.messageService.add({
+                severity: 'warn',
+                detail: 'Seleccione un grado'
+            });
 
 
-        const headers = {
-            'country': 'PE',
-            'provider': 'integracion',
-            'apiKey': 'Z2ZKVS8vMk15SVg5M0Fqdlc5MFY1R2s2alJBbE01Sk9PZWhaV1ovbkhXU2VIRmQ4T0w2UU5wUHZKeWZ5bkg0dA=='
-        };
+        } else {
+
+            
+            this.loading = true
 
 
-        function convertirHoraDecimal(horaStr: string): string {
-            const [hora, minuto] = horaStr.split('.');
-            const horaFormateada = hora.padStart(2, '0');
-            const minutoFormateado = minuto?.padEnd(2, '0') || '00';
-            return `${horaFormateada}:${minutoFormateado}:00`;
-        }
+            let baseKey: keyof typeof environment.ENDPOINTS = 'API_SERVICIOS_3';
 
 
-        this._http.postWithHeaders(req, baseKey, 'api/v1/integracion/reprogramacion-clases/horario-docente', headers).subscribe(
+            const [grado, semestre] = this.tablaGrado.split('|');
 
-            (res: any) => {
 
-                const horario_docente = res?.result?.sjB_OBT_HORARIO_DOCENTE_RESP;
+            let req = {
+                "institucion": "UPSJB",
+                "gradoAcademico": grado,
+                "semestre": semestre,
+                "codigoAlumno": "1000151224",
+                "fechaInicio": this.primerDia,
+                "fechaFinal": this.ultimoDia
+            }
 
-                if (Array.isArray(horario_docente?.sjB_OBT_HORARIO_DOCENTE_RES)) {
 
-                    this.listaHorarioDocente = horario_docente.sjB_OBT_HORARIO_DOCENTE_RES;
+            const headers = {
+                'country': 'PE',
+                'provider': 'integracion',
+                'apiKey': 'Z2ZKVS8vMk15SVg5M0Fqdlc5MFY1R2s2alJBbE01Sk9PZWhaV1ovbkhXU2VIRmQ4T0w2UU5wUHZKeWZ5bkg0dA=='
+            };
 
-                    if (this.listaHorarioDocente.length > 0) {
 
-                        this.messageService.add({
-                            severity: 'success',
-                            detail: 'El horario ha sido actualizado'
-                        });
+            function convertirHoraDecimal(horaStr: string): string {
+                const [hora, minuto] = horaStr.split('.');
+                const horaFormateada = hora.padStart(2, '0');
+                const minutoFormateado = minuto?.padEnd(2, '0') || '00';
+                return `${horaFormateada}:${minutoFormateado}:00`;
+            }
 
-                        const eventosFormateados = this.listaHorarioDocente.map((h: any) => {
 
-                            const horaInicio = convertirHoraDecimal(h.horA_INICIO);
-                            const horaFin = convertirHoraDecimal(h.horA_FIN);
+            this._http.postWithHeaders(req, baseKey, 'api/v1/integracion/reprogramacion-clases/horario-docente', headers).subscribe(
 
-                            return {
+                (res: any) => {
 
-                                title: h.descr || 'Clase',
-                                start: `${h.meetinG_DT}T${horaInicio}`,
-                                end: `${h.meetinG_DT}T${horaFin}`,
-                                allDay: false,
-                                color: h.stnD_MTG_PAT[0] === 'M' ? '#007bff' : '#36f162ff',
+                    const horario_docente = res?.result?.sjB_OBT_HORARIO_DOCENTE_RESP;
 
-                                extendedProps: {
+                    if (Array.isArray(horario_docente?.sjB_OBT_HORARIO_DOCENTE_RES)) {
 
-                                    cursoID: h.crsE_ID,
-                                    numeroClase: h.clasS_NBR,
-                                    numeroCampusMTG: h.campuS_MTG_NBR,
-                                    codigoSeccion: h.sessioN_CODE,
-                                    componente: h.ssR_COMPONENT,
-                                    componenteDesc: h.descR_COMPONENTE,
-                                    ambienteID: h.facilitY_ID,
-                                    tipoAmbiente: h.facilitY_TYPE,
-                                    ubicacion: h.location,
+                        this.listaHorarioDocente = horario_docente.sjB_OBT_HORARIO_DOCENTE_RES;
 
-                                    modelo: h.stnD_MTG_PAT,
-                                    programa: h.sjB_DESCR_ESCUELA,
+                        if (this.listaHorarioDocente.length > 0) {
 
-                                    asignatura: h.descr,
-                                    cantidadAlumnos: h.enrL_CAP,
-                                    docenteNombre: h.firsT_NAME,
-                                    docenteApPtrn: h.lasT_NAME,
-                                    docenteApMtrn: h.seconD_LAST_NAME,
+                            this.messageService.add({
+                                severity: 'success',
+                                detail: 'El horario ha sido actualizado'
+                            });
 
-                                    fecha: h.meetinG_DT,
-                                    horaI: h.horA_INICIO,
-                                    horaF: h.horA_FIN,
+                            const eventosFormateados = this.listaHorarioDocente.map((h: any) => {
 
-                                }
+                                const horaInicio = convertirHoraDecimal(h.horA_INICIO);
+                                const horaFin = convertirHoraDecimal(h.horA_FIN);
 
-                            };
+                                return {
 
-                        });
+                                    title: h.descr || 'Clase',
+                                    start: `${h.meetinG_DT}T${horaInicio}`,
+                                    end: `${h.meetinG_DT}T${horaFin}`,
+                                    allDay: false,
+                                    color: h.stnD_MTG_PAT[0] === 'M' ? '#007bff' : '#36f162ff',
 
-                        this.calendarOptions.events = eventosFormateados;
+                                    extendedProps: {
+
+                                        cursoID: h.crsE_ID,
+                                        numeroClase: h.clasS_NBR,
+                                        numeroCampusMTG: h.campuS_MTG_NBR,
+                                        codigoSeccion: h.sessioN_CODE,
+                                        componente: h.ssR_COMPONENT,
+                                        componenteDesc: h.descR_COMPONENTE,
+                                        ambienteID: h.facilitY_ID,
+                                        tipoAmbiente: h.facilitY_TYPE,
+                                        ubicacion: h.location,
+
+                                        modelo: h.stnD_MTG_PAT,
+                                        programa: h.sjB_DESCR_ESCUELA,
+
+                                        asignatura: h.descr,
+                                        cantidadAlumnos: h.enrL_CAP,
+                                        docenteNombre: h.firsT_NAME,
+                                        docenteApPtrn: h.lasT_NAME,
+                                        docenteApMtrn: h.seconD_LAST_NAME,
+
+                                        fecha: h.meetinG_DT,
+                                        horaI: h.horA_INICIO,
+                                        horaF: h.horA_FIN,
+
+                                    }
+
+                                };
+
+                            });
+
+                            this.calendarOptions.events = eventosFormateados;
+
+                        } else {
+
+                            this.messageService.add({
+                                severity: 'warn',
+                                detail: 'No hay horario que mostrar'
+                            });
+
+                            this.calendarOptions.events = [];
+
+                        }
 
                     } else {
 
-                        this.messageService.add({
-                            severity: 'warn',
-                            detail: 'No hay horario que mostrar'
-                        });
-
+                        this.listaHorarioDocente = [];
                         this.calendarOptions.events = [];
 
                     }
 
-                } else {
+                    console.log("Horario Docente\n\n", this.listaHorarioDocente);
 
-                    this.listaHorarioDocente = [];
-                    this.calendarOptions.events = [];
+                    this.loading = false
 
                 }
 
-                console.log("Horario Docente\n\n", this.listaHorarioDocente);
+            );
 
-            }
-
-        );
+        }
 
     }
 
     consultarAmbientesDisponibles() {
+
+        alert("nuevo")
 
 
         this.consultarConfiguracionAplicacion();
@@ -1089,6 +1102,24 @@ export class CalendarioComponent implements OnInit {
 
     }
 
+    consultarConfiguracionSemestre() {
+
+        let baseKey: keyof typeof environment.ENDPOINTS = 'API_SERVICIOS_LOCAL';
+
+        this._http.get(baseKey, 'consultar-configuracion-semestre').subscribe(
+
+            (res) => {
+
+                this.listaSemestre = [...res.lista];
+
+                console.log("Lista Semestre\n\n", this.listaSemestre);
+
+            }
+
+        )
+
+    }
+
 
     //#endregion
 
@@ -1204,7 +1235,7 @@ export class CalendarioComponent implements OnInit {
     //#endregion
 
 
-    //#region       FUNCIONES DE PRUEBA
+    //#region       FUNCIONES DE PRUEBA             
 
 
     consultarCorreoAlumnosPrueba() {

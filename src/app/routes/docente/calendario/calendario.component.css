@@ -191,3 +191,19 @@ full-calendar {
     padding: 0 1rem;
 }
 
+.boton-grado {
+    height: 4rem;
+    width: 15rem;
+    border: none;
+    border-radius: 1rem;
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+    cursor: pointer;
+    background-color: #FF0A41;
+}
+

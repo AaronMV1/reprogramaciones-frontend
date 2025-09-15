@@ -92,6 +92,13 @@
                     </div>
                 </div>
 
+                <div class="opcion-fila">
+                    <label for="">Configuración del Semestre:</label>
+                    <div class="boton boton-color-1" (click)="abrirPopup('semestre')">
+                        <p>Abrir</p>
+                    </div>
+                </div>
+
             </div>
 
         </div>
@@ -296,6 +303,138 @@
         </div>
 
         <p>• Para actualizar o eliminar una cuenta es necesario ingresar el correo electrónico asociado.</p>
+
+    </div>
+
+    <div class="popup-semestre" *ngIf="popupActivo === 'semestre'">
+
+        <div class="popup-header">
+
+            <div class="popup-titulo">
+                <ng-icon name="featherLayers" />
+                <h3>Configuración del Semestre</h3>
+            </div>
+
+            <div class="popup-cerrar" (click)="cerrarPopup()">
+                <ng-icon name="featherXCircle" />
+            </div>
+
+        </div>
+
+        <div class="campos">
+
+            <div class="campo-contenedor campo-contenedor-25">
+
+                <label for="" class="label">Grado Académico</label>
+
+                <div class="campo">
+                    <input type="text" placeholder="Grado Académico" [(ngModel)]="popupSemestreGrado" disabled="true"/>
+                </div>
+
+            </div>
+
+            <div class="campo-contenedor campo-contenedor-25">
+
+                <label for="" class="label">Cod. Grado Académico</label>
+
+                <div class="campo">
+                    <input type="text" placeholder="Código de Grado Académico" [(ngModel)]="popupSemestreCodGrado"/>
+                </div>
+
+            </div>
+
+            <div class="campo-contenedor campo-contenedor-25">
+
+                <label for="" class="label label-obligatorio">Semestre</label>
+
+                <div class="campo">
+                    <input type="text" placeholder="Semestre" [(ngModel)]="popupSemestreSemestre" />
+                </div>
+
+            </div>
+
+            <div class="campo-contenedor campo-contenedor-25">
+
+                <label for="" class="label label-obligatorio">Código del Semestre</label>
+
+                <div class="campo">
+                    <input type="text" placeholder="Código del Semestre" [(ngModel)]="popupSemestreCodSemestre" />
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="campos campos-botones">
+
+            <div class="campo-contenedor campo-contenedor-25">
+
+                <label for="" class="label label-obligatorio">Fecha Inicio</label>
+
+                <div class="campo">
+
+                    <input type="date" [(ngModel)]="popupSemestreFInicio" />
+
+                </div>
+
+            </div>
+
+            <div class="campo-contenedor campo-contenedor-25">
+
+                <label for="" class="label label-obligatorio">Fecha Cierre</label>
+
+                <div class="campo">
+
+                    <input type="date" [(ngModel)]="popupSemestreFCierre" />
+
+                </div>
+
+            </div>
+
+            <div class="campo-contenedor campo-contenedor-25"></div>
+
+            <div class="campo-contenedor campo-contenedor-25">
+
+                <div class="boton boton-color-1" (click)="actualizarConfiguracionSemestre()">
+                    <ng-icon name="featherArrowUp"></ng-icon>
+                    <p>Actualizar</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="popup-semestre-lista">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Grado Académico</th>
+                        <th>Semestre (Código)</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Cierre</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @for (item of listaSemestre; track $index) {
+
+                        <tr (click)="copiarSemestreDatos(item)">
+                            <td>{{item.grado}}</td>
+                            <td>{{item.codigoSemestre}}</td>
+                            <td>{{item.fechaInicio | date:'dd / MM / yyyy'}}</td>
+                            <td>{{item.fechaCierre | date:'dd / MM / yyyy'}}</td>
+                        </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
 
     </div>
 
