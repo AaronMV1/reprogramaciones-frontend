@@ -32,8 +32,8 @@ function f(...e) {
       let s4 = typeof n;
       if (s4 === "string" || s4 === "number") t2.push(n);
       else if (s4 === "object") {
-        let c3 = Array.isArray(n) ? [f(...n)] : Object.entries(n).map(([r, o]) => o ? r : void 0);
-        t2 = c3.length ? t2.concat(c3.filter((r) => !!r)) : t2;
+        let c2 = Array.isArray(n) ? [f(...n)] : Object.entries(n).map(([r, o]) => o ? r : void 0);
+        t2 = c2.length ? t2.concat(c2.filter((r) => !!r)) : t2;
       }
     }
     return t2.join(" ").trim();
@@ -74,11 +74,11 @@ function v(t2, e) {
   }
   return 0;
 }
-function c(t2) {
+function p(t2) {
   return typeof Element != "undefined" ? t2 instanceof Element : t2 !== null && typeof t2 == "object" && t2.nodeType === 1 && typeof t2.nodeName == "string";
 }
 function A(t2, e = {}) {
-  if (c(t2)) {
+  if (p(t2)) {
     let o = (n, r) => {
       var l2, d;
       let i2 = (l2 = t2 == null ? void 0 : t2.$attrs) != null && l2[n] ? [(d = t2 == null ? void 0 : t2.$attrs) == null ? void 0 : d[n]] : [];
@@ -87,8 +87,8 @@ function A(t2, e = {}) {
           let u = typeof a2;
           if (u === "string" || u === "number") s4.push(a2);
           else if (u === "object") {
-            let p2 = Array.isArray(a2) ? o(n, a2) : Object.entries(a2).map(([f2, g3]) => n === "style" && (g3 || g3 === 0) ? `${f2.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase()}:${g3}` : g3 ? f2 : void 0);
-            s4 = p2.length ? s4.concat(p2.filter((f2) => !!f2)) : s4;
+            let c2 = Array.isArray(a2) ? o(n, a2) : Object.entries(a2).map(([f2, g3]) => n === "style" && (g3 || g3 === 0) ? `${f2.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase()}:${g3}` : g3 ? f2 : void 0);
+            s4 = c2.length ? s4.concat(c2.filter((f2) => !!f2)) : s4;
           }
         }
         return s4;
@@ -145,7 +145,7 @@ function Qt(t2) {
   t2 && ("remove" in Element.prototype ? t2.remove() : (e = t2.parentNode) == null || e.removeChild(t2));
 }
 function Kt(t2, e = "", o) {
-  c(t2) && o !== null && o !== void 0 && t2.setAttribute(e, o);
+  p(t2) && o !== null && o !== void 0 && t2.setAttribute(e, o);
 }
 
 // node_modules/@primeuix/utils/dist/eventbus/index.mjs
@@ -208,7 +208,7 @@ function l(e) {
 function s2(e) {
   return !a(e);
 }
-function c2(e, t2) {
+function c(e, t2) {
   if (!e || !t2) return null;
   try {
     let n = e[t2];
@@ -230,7 +230,7 @@ function c2(e, t2) {
   return null;
 }
 function k(e, t2, n) {
-  return n ? c2(e, n) === c2(t2, n) : y(e, t2);
+  return n ? c(e, n) === c(t2, n) : y(e, t2);
 }
 function i(e, t2 = true) {
   return e instanceof Object && e.constructor === Object && (t2 || Object.keys(e).length !== 0);
@@ -238,11 +238,11 @@ function i(e, t2 = true) {
 function m(e, ...t2) {
   return l(e) ? e(...t2) : e;
 }
-function p(e, t2 = true) {
+function p2(e, t2 = true) {
   return typeof e == "string" && (t2 || e !== "");
 }
 function g(e) {
-  return p(e) ? e.replace(/(-|_)/g, "").toLowerCase() : e;
+  return p2(e) ? e.replace(/(-|_)/g, "").toLowerCase() : e;
 }
 function F(e, t2 = "", n = {}) {
   let r = g(t2).split("."), o = r.shift();
@@ -321,7 +321,7 @@ function Y(e) {
   return e;
 }
 function ee(e) {
-  return p(e) ? e.replace(/(_)/g, "-").replace(/[A-Z]/g, (t2, n) => n === 0 ? t2 : "-" + t2.toLowerCase()).toLowerCase() : e;
+  return p2(e) ? e.replace(/(_)/g, "-").replace(/[A-Z]/g, (t2, n) => n === 0 ? t2 : "-" + t2.toLowerCase()).toLowerCase() : e;
 }
 
 // node_modules/@primeuix/utils/dist/uuid/index.mjs
@@ -464,7 +464,7 @@ var FilterService = class _FilterService {
     if (value) {
       for (let item of value) {
         for (let field of fields) {
-          let fieldValue = c2(item, field);
+          let fieldValue = c(item, field);
           if (this.filters[filterMatchMode](fieldValue, filterValue, filterLocale)) {
             filteredItems.push(item);
             break;
@@ -1273,7 +1273,7 @@ export {
   s2,
   i,
   m,
-  p,
+  p2 as p,
   F,
   _,
   z,
@@ -1296,4 +1296,4 @@ export {
   TranslationKeys,
   TreeDragDropService
 };
-//# sourceMappingURL=chunk-Y6JQKOHR.js.map
+//# sourceMappingURL=chunk-EA7IW645.js.map

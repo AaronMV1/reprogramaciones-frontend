@@ -48,6 +48,10 @@ export class ConfiguracionComponent implements OnInit {
     checkboxCoordinadorAmbiente: boolean = false;
 
 
+    fechaInicioCiclo: string = '';
+    fechaCierreCiclo: string = '';
+
+
     constructor(
         private _router: Router,
         public _http: HttpService,

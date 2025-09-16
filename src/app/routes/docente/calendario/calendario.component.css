@@ -165,13 +165,37 @@ full-calendar {
     width: 100%;
     background-color: rgba(0,0,0,0.5);
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
     z-index: 600;
     color: white;
-    font-size: 2.5rem;
+    font-size: 3rem;
 }
+
+.loading span {
+  animation: blink 1.5s infinite;
+}
+
+.loading span:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.loading span:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+.loading > span:nth-child(1) {
+    margin-left: .5rem;
+}
+
+@keyframes blink {
+  0%   { opacity: 0; }
+  50%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+
 
 .contenedor-opciones {
     display: flex;
@@ -206,4 +230,5 @@ full-calendar {
     cursor: pointer;
     background-color: #FF0A41;
 }
+
 

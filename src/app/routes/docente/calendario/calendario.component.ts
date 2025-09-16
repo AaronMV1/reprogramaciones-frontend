@@ -12,6 +12,9 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { environment } from '../../../../environments/environment';
 
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
 
 @Component({
     selector: 'app-calendario',
@@ -53,6 +56,7 @@ export class CalendarioComponent implements OnInit {
     listaValoresAmbientes: any[] = [];
     listaCorreoCopia: any[] = [];
     listaSemestre: any[] = [];
+    listaSemestreSeleccionado: any[] = [];
 
 
     //  VARIABLES DE CONFIGURACION
@@ -126,7 +130,7 @@ export class CalendarioComponent implements OnInit {
     //#region       FUNCIONES DEL CALENDARIO        
 
 
-    fechaCalendario: string = '2025-03-30';     //  PRUEBAS
+    fechaCalendario: string = '2025-03-08';     //  PRUEBAS
     // fechaCalendario: any = new Date();       //  PRODUCCIÓN
 
 
@@ -212,7 +216,8 @@ export class CalendarioComponent implements OnInit {
         headerToolbar: {
             left: 'botonRegresar',
             center: 'title',
-            right: 'today prev next botonActualizar'
+            // right: 'today prev next botonActualizar'
+            right: 'today prev next'
             // right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
 
@@ -580,7 +585,6 @@ export class CalendarioComponent implements OnInit {
                 this.checkboxCoordinadorPrograma = res.lista[0].correoCoordinadorPrograma;
                 this.checkboxCoordinadorAmbiente = res.lista[0].correoCoordinadorAmbiente;
 
-                this.calcularRangoFecha();
                 this.servicioCorreo();
 
                 console.log("Configuración Aplicación\n\n");
@@ -642,7 +646,7 @@ export class CalendarioComponent implements OnInit {
 
         } else {
 
-            
+
             this.loading = true
 
 
@@ -652,13 +656,21 @@ export class CalendarioComponent implements OnInit {
             const [grado, semestre] = this.tablaGrado.split('|');
 
 
+            this.listaSemestreSeleccionado = this.listaSemestre.filter((item: any) => (item.codigoGrado === grado));
+            // console.log(this.listaSemestreSeleccionado);
+
+            this.calcularRangoFecha();
+
+
             let req = {
                 "institucion": "UPSJB",
                 "gradoAcademico": grado,
                 "semestre": semestre,
                 "codigoAlumno": "1000151224",
-                "fechaInicio": this.primerDia,
-                "fechaFinal": this.ultimoDia
+                // "fechaInicio": this.primerDia,
+                // "fechaFinal": this.ultimoDia
+                "fechaInicio": this.fechaCalendario,
+                "fechaFinal": "2025-06-30"
             }
 
 
@@ -742,16 +754,15 @@ export class CalendarioComponent implements OnInit {
 
                         } else {
 
-                            this.messageService.add({
-                                severity: 'warn',
-                                detail: 'No hay horario que mostrar'
-                            });
-
                             this.calendarOptions.events = [];
-
                         }
 
                     } else {
+
+                        this.messageService.add({
+                            severity: 'error',
+                            detail: 'No hay horario que mostrar'
+                        });
 
                         this.listaHorarioDocente = [];
                         this.calendarOptions.events = [];
@@ -772,7 +783,8 @@ export class CalendarioComponent implements OnInit {
 
     consultarAmbientesDisponibles() {
 
-        alert("nuevo")
+        
+        this.loading = true;
 
 
         this.consultarConfiguracionAplicacion();
@@ -837,6 +849,8 @@ export class CalendarioComponent implements OnInit {
                 }
 
                 console.log("Ambientes Disponibles\n\n", this.listaAmbientesDisponibles);
+
+                this.loading = false;
 
             }
 
@@ -928,6 +942,11 @@ export class CalendarioComponent implements OnInit {
 
 
         let plantilla = `
+
+
+            <h2>⚠️ Aviso Importante:</h2>
+            <p></p>Este correo corresponde a una prueba de notificación automática. Si lo ha recibido por error, por favor haga caso omiso del presente mensaje.</p>
+
 
             <div style="height: auto; width: 30rem; background-color: white; margin: 40px auto; display: flex; flex-direction: column; position: relative; box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.1);">
 
@@ -1153,19 +1172,39 @@ export class CalendarioComponent implements OnInit {
     minDate!: string;
     maxDate!: string;
 
+    
     calcularRangoFecha() {
 
-        const fechaBase = new Date(this.fechaCalendario);
+
+        const semestre = this.listaSemestreSeleccionado[0];
+
+
+        //  Antes
+
+        const fechaBase = new Date(this.fechaCalendario); // ej. 15/02/2025
+        fechaBase.setDate(fechaBase.getDate() + 1)
+
+        const fechaInicio = new Date(semestre.fechaInicio);   // ej. 01/03/2025 
+
+        
+        const fechaMin = fechaBase > fechaInicio ? fechaBase : fechaInicio;
+
+        //  Despues
+
+        const fechaMax = new Date(semestre.fechaCierre);
 
         // 7 días antes
-        const fechaMin = new Date(fechaBase);
+        
+        // const fechaMin = new Date(fechaBase);
         // fechaMin.setDate(fechaBase.getDate() - 7);
-        fechaMin.setDate(fechaBase.getDate() - this.plazoMaximo);
-
+        // fechaMin.setDate(fechaBase.getDate() - this.plazoMaximo);
+        
         // 7 días después
-        const fechaMax = new Date(fechaBase);
+
+        // const fechaMax = new Date(fechaBase);
         // fechaMax.setDate(fechaBase.getDate() + 7);
-        fechaMax.setDate(fechaBase.getDate() + this.plazoMaximo);
+        // fechaMax.setDate(fechaBase.getDate() + this.plazoMaximo);
+        
 
         // Convertimos a formato YYYY-MM-DD
         this.minDate = fechaMin.toISOString().split('T')[0];

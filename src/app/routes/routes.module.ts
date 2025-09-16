@@ -30,6 +30,7 @@ import { ConfiguracionComponent } from './doa/configuracion/configuracion.compon
 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ModalComponent } from './aplicacion/modal/modal.component';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 
 @NgModule({
@@ -58,6 +59,7 @@ import { ModalComponent } from './aplicacion/modal/modal.component';
         MessageModule,
         ToastModule,
         MatProgressSpinnerModule,
+        ProgressSpinnerModule,
         NgIconsModule.withIcons({ featherFileText, featherSearch, featherEye, featherArrowLeft, featherArrowRight, featherCalendar, featherXCircle, featherClock, featherUpload, featherFilePlus, featherSettings, featherSave, featherUsers, featherPlus, featherX, featherArrowUp, featherRotateCcw, featherFilter, featherLayers  }),
     ],
 

@@ -1,12 +1,14 @@
 import {
-  BaseComponent,
-  BaseStyle,
   CheckIcon,
   ExclamationTriangleIcon,
   InfoCircleIcon,
   TimesCircleIcon,
   TimesIcon
-} from "./chunk-ZFMTRCAU.js";
+} from "./chunk-NNHHEU72.js";
+import {
+  BaseComponent,
+  BaseStyle
+} from "./chunk-TVTSJGPO.js";
 import {
   Kt,
   MessageService,
@@ -14,7 +16,7 @@ import {
   SharedModule,
   a,
   s3 as s
-} from "./chunk-Y6JQKOHR.js";
+} from "./chunk-EA7IW645.js";
 import {
   animate,
   animateChild,
@@ -916,6 +918,7 @@ var Toast = class _Toast extends BaseComponent {
     if (!this.styleElement) {
       this.styleElement = this.renderer.createElement("style");
       this.styleElement.type = "text/css";
+      Kt(this.styleElement, "nonce", this.config?.csp()?.nonce);
       this.renderer.appendChild(this.document.head, this.styleElement);
       let innerHTML = "";
       for (let breakpoint in this.breakpoints) {
