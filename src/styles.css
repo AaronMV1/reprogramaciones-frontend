@@ -738,6 +738,20 @@ fc-button {
     text-transform: uppercase !important;
 }
 
+.fc-toolbar-chunk {
+    display: flex;
+    flex-direction: row !important;
+    align-items: center;
+}
+
+.fc-tituloPersonalizado-button {
+    background-color: #FF0A41 !important;
+    color: white !important;
+    border: none !important;
+    margin-left: 2rem !important;
+    font-size: 2.5rem !important;
+    padding: .2rem 2rem !important;
+}
 
 /* .fc-scrollgrid-section-body {
     background-color: blue !important;
@@ -766,6 +780,11 @@ fc-button {
     color: white !important;
     font-weight: 700 !important;
 }
+
+.mi-clase-fecha {
+    background-color: #cce5ff !important;
+}
+
 
 
 /* #endregion */

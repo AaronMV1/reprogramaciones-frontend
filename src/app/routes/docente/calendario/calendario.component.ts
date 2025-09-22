@@ -40,8 +40,10 @@ export class CalendarioComponent implements OnInit {
 
 
     events: any[] = [];
-    primerDia: string = '';
-    ultimoDia: string = '';
+
+
+    // primerDia: string = '';
+    // ultimoDia: string = '';
 
 
     //  LISTAS
@@ -64,6 +66,7 @@ export class CalendarioComponent implements OnInit {
 
     limiteClase: any = '';
     plazoMaximo: any = '';
+    anticipacionMinima: any = '';
     checkboxDocente: boolean = false;
     checkboxAlumno: boolean = false;
     checkboxDOA: boolean = false;
@@ -94,13 +97,30 @@ export class CalendarioComponent implements OnInit {
     popupFormularioFecha: string = '';
     popupFormularioHoraI: string = '';
     popupFormularioHoraF: string = '';
-
+  
 
     popupFormularioNuevaFecha: string = '';
     popupFormularioNuevaHoraI: string = '';
     popupFormularioNuevaHoraF: string = '';
     popupFormularioNuevoAmbienteID: string = '';
     popupFormularioNuevoMotivo: string = '';
+
+
+
+    entornoPruebas: boolean = true;
+
+
+
+    idDocente: string = '';
+    fechaActual: any = '';
+
+    fechaInicio!: string;               //  FECHA INICIO CICLO
+    fechaCierre!: string;               //  FECHA CIERRE CICLO
+
+    fechaMin!: string;                  //  RANGO INICIO PERMITIDO
+    fechaMax!: string;                  //  RANGO CIERRE PERMITIDO
+
+    fechaMinPermitida!: string;
 
 
     constructor(
@@ -114,25 +134,62 @@ export class CalendarioComponent implements OnInit {
 
     ngOnInit(): void {
 
-        const perfilGuardado = sessionStorage.getItem('perfil');
-        this.sesionListaPerfil = perfilGuardado ? JSON.parse(perfilGuardado) : [];
-
-        console.log("Perfil\n\n\n", this.sesionListaPerfil);
+        this.entornoPruebas ? this.entornoDesarrollo() : this.entornoProduccion()
+        this.calendarOptions.initialDate = this.fechaActual;
 
         this.consultarConfiguracionHorario();
+        this.consultarConfiguracionSemestre();
         this.consultarValoresComponentes();
         this.consultarValoresAmbientes();
-        this.consultarConfiguracionSemestre();
+        this.consultarConfiguracionAplicacion();
 
     }
 
 
+
+    entornoProduccion() {
+
+        alert("Produccion")
+
+        const perfilGuardado = sessionStorage.getItem('perfil');
+        this.sesionListaPerfil = perfilGuardado ? JSON.parse(perfilGuardado) : [];
+
+        if (this.sesionListaPerfil.length > 0) {
+            this.idDocente = this.sesionListaPerfil[0].empleadoID;
+        }
+
+         this.fechaActual  = new Date().toISOString().split('T')[0];
+
+    }
+
+
+    entornoDesarrollo() {
+
+        alert("Desarrollo")
+
+        const perfilGuardado = sessionStorage.getItem('perfil');
+        this.sesionListaPerfil = perfilGuardado ? JSON.parse(perfilGuardado) : [];
+
+         if (this.sesionListaPerfil.length > 0) {
+            this.idDocente = "1000031362"
+        }
+
+        this.fechaActual = '2025-09-19';
+
+    }
+
+
+    
+    // idDocente: string = '1000031362';                                //  PRUEBAS
+    // idDocente: string = "1000031362";                                //  PRUEBAS
+           //  PRODUCCIÓN
+    
+
+    
+
+
     //#region       FUNCIONES DEL CALENDARIO        
-
-
-    fechaCalendario: string = '2025-03-08';     //  PRUEBAS
-    // fechaCalendario: any = new Date();       //  PRODUCCIÓN
-
+    
 
     calendarOptions: CalendarOptions = {
 
@@ -141,8 +198,8 @@ export class CalendarioComponent implements OnInit {
 
 
         initialView: 'timeGridWeek',
-        initialDate: this.fechaCalendario,
-        editable: true,
+        initialDate: this.fechaActual,
+        editable: false,
         themeSystem: 'standard',
         locale: 'es',
         locales: [esLocale],
@@ -194,8 +251,8 @@ export class CalendarioComponent implements OnInit {
         // dateClick: (arg) => this.handleDateClick(arg),
         // eventDrop: (info) => this.handleEventDrop(info),
         // eventDrop: (info) => this.handleEventDrop2(info),
+        // datesSet: this.datesSet.bind(this),
         eventClick: (info) => this.handleEventClick(info),
-        datesSet: this.datesSet.bind(this),
 
 
 
@@ -215,13 +272,17 @@ export class CalendarioComponent implements OnInit {
 
         headerToolbar: {
             left: 'botonRegresar',
-            center: 'title',
+            center: 'title tituloPersonalizado',
             // right: 'today prev next botonActualizar'
             right: 'today prev next'
             // right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
 
         customButtons: {
+
+            tituloPersonalizado: {
+                text: this.fechaActual
+            },
 
             botonRegresar: {
                 text: 'Regresar',
@@ -234,11 +295,8 @@ export class CalendarioComponent implements OnInit {
             botonActualizar: {
                 text: '↺',
                 click: () => {
-
                     this.consultarHorarioDocente();
-
                 }
-
             }
 
         },
@@ -255,7 +313,7 @@ export class CalendarioComponent implements OnInit {
             // day: 'Día',
             prev: '<',
             next: '>'
-        }
+        },
 
 
     };
@@ -339,99 +397,6 @@ export class CalendarioComponent implements OnInit {
         }
 
     }
-    */
-
-
-    handleEventClick(info: any) {
-
-
-        const evento = info.event;
-
-        if (evento.extendedProps.modelo[0] === 'M') {
-
-            console.log("Evento:\n\n", evento)
-
-            this.consultarConfiguracionAplicacion()
-
-            this.listaAmbientesDisponibles = [];
-
-            // Obtener Tipo Ambiente
-            const ambiente = this.listaValoresAmbientes.filter((item: any) => item.VALOR_CAMPO === evento.extendedProps.tipoAmbiente);
-            const tipo_ambiente = ambiente[0].DESCR_CAMPO;
-
-            this.popupFormularioCursoID = evento.extendedProps.cursoID;
-            this.popupFormularioNumeroClase = evento.extendedProps.numeroClase;
-            this.popupFormularioNumeroCampusMTG = evento.extendedProps.numeroCampusMTG;
-            this.popupFormularioCodigoSeccion = evento.extendedProps.codigoSeccion;
-            this.popupFormularioComponente = evento.extendedProps.componente;
-            this.popupFormularioComponenteDesc = evento.extendedProps.componenteDesc;
-            this.popupFormularioAmbienteID = evento.extendedProps.ambienteID;
-            this.popupFormularioTipoAmb = tipo_ambiente;
-            this.popupFormularioTipoAmbiente = evento.extendedProps.tipoAmbiente;
-            this.popupFormularioUbicacion = evento.extendedProps.ubicacion;
-            this.popupFormularioModelo = evento.extendedProps.modelo;
-            this.popupFormularioPrograma = evento.extendedProps.programa;
-            this.popupFormularioAsignatura = evento.extendedProps.asignatura;
-            this.popupFormularioCantidadAlumnos = evento.extendedProps.cantidadAlumnos;
-            this.popupFormularioDocenteNombre = evento.extendedProps.docenteNombre;
-            this.popupFormularioDocenteApPtrn = evento.extendedProps.docenteApPtrn;
-            this.popupFormularioDocenteApMtrn = evento.extendedProps.docenteApMtrn;
-            this.popupFormularioFecha = evento.extendedProps.fecha;
-            this.popupFormularioHoraI = evento.extendedProps.horaI;
-            this.popupFormularioHoraF = evento.extendedProps.horaF;
-
-            console.log("Curso ID:\t\t", this.popupFormularioCursoID);
-            console.log("Numero Clase:\t\t", this.popupFormularioNumeroClase);
-            console.log("Numero Campus MTG:\t\t", this.popupFormularioNumeroCampusMTG);
-            console.log("Codigo Seccion:\t\t", this.popupFormularioCodigoSeccion);
-            console.log("Componente:\t\t", this.popupFormularioComponente);
-            console.log("Componente Desc:\t", this.popupFormularioComponenteDesc);
-            console.log("Ambiente ID:\t\t", this.popupFormularioAmbienteID)
-            console.log("Ambiente Tipo:\t\t", this.popupFormularioTipoAmbiente);
-            console.log("Ambiente Tipo Desc:\t", this.popupFormularioTipoAmb);
-            console.log("Ubicacion:\t\t", this.popupFormularioUbicacion);
-            console.log("Modelo:\t\t\t", this.popupFormularioModelo);
-            console.log("Programa:\t\t\t", this.popupFormularioPrograma);
-            console.log("Asignatura:\t\t", this.popupFormularioAsignatura);
-            console.log("Cantidad Alumnos:\t", this.popupFormularioCantidadAlumnos);
-            console.log("Docente Nombre:\t\t", this.popupFormularioDocenteNombre);
-            console.log("Docente Ap.Pat:\t\t", this.popupFormularioDocenteApPtrn);
-            console.log("Docente Ap.Mat:\t\t", this.popupFormularioDocenteApMtrn);
-            console.log("Fecha:\t\t\t", this.popupFormularioFecha);
-            console.log("Hora Inicio:\t\t", this.popupFormularioHoraI);
-            console.log("Hora Fin:\t\t", this.popupFormularioHoraF);
-
-            this.mostrarFormulario(1, evento);
-
-            this.popupFormularioNuevaFecha = "";
-            this.popupFormularioNuevaHoraI = "";
-            this.popupFormularioNuevaHoraF = "";
-            this.popupFormularioNuevoAmbienteID = "";
-            this.popupFormularioNuevoMotivo = "";
-
-        } else {
-
-            Swal.fire({
-                icon: 'error',
-                title: 'Reprogramación No Disponible',
-                text: 'La clase no está disponible para reprogramar o ya fue reprogramada anteriormente.',
-                allowOutsideClick: false,
-                customClass: {
-                    popup: 'swal',
-                    icon: 'swal-icon',
-                    title: 'swal-title',
-                    htmlContainer: 'swal-text',
-                    confirmButton: 'swal-confirm-button',
-                    cancelButton: 'swal-cancel-button'
-                }
-            });
-
-        }
-
-
-    }
-
-
     datesSet(info: any) {
 
         const currentMonthDate = info.view.currentStart;
@@ -455,6 +420,170 @@ export class CalendarioComponent implements OnInit {
 
         this.primerDia = format(firstDay);
         this.ultimoDia = format(lastDay);
+
+    }
+    */
+
+
+    handleEventClick(info: any) {
+
+
+        const evento = info.event;
+
+
+        //  BLOQUEAR FUERA DEL RANGO
+        
+
+        const fecha1 = new Date(evento.extendedProps.fecha);
+        const fecha2 = new Date(this.fechaActual);
+
+
+        // Diferencia en milisegundos
+        const diferenciaMs = fecha2.getTime() - fecha1.getTime();
+
+        // Diferencia en días
+        const diferenciaDias = Math.floor(diferenciaMs / (1000 * 60 * 60 * 24));
+
+
+        console.log("fecha1: " + fecha1.toISOString().split('T')[0])
+        console.log("fecha2: " + fecha2.toISOString().split('T')[0])
+        console.log("Diferencia en días: " + diferenciaDias);
+
+
+        if (diferenciaDias > this.plazoMaximo) {
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Reprogramación No Disponible',
+                text: 'La clase ya no puede reprogramarse, el plazo de ' + this.plazoMaximo +  ' días ha vencido.',
+                allowOutsideClick: false,
+                customClass: {
+                    popup: 'swal',
+                    icon: 'swal-icon',
+                    title: 'swal-title',
+                    htmlContainer: 'swal-text',
+                    confirmButton: 'swal-confirm-button',
+                    cancelButton: 'swal-cancel-button'
+                }
+            });
+
+            return 
+
+        }
+
+
+        if (diferenciaDias <= 0 && diferenciaDias >= -(this.anticipacionMinima) +1) {
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Reprogramación No Disponible',
+                text: 'La clase solo se puede reprogramar con al menos ' + this.anticipacionMinima +  ' días de anticipación.',
+                allowOutsideClick: false,
+                customClass: {
+                    popup: 'swal',
+                    icon: 'swal-icon',
+                    title: 'swal-title',
+                    htmlContainer: 'swal-text',
+                    confirmButton: 'swal-confirm-button',
+                    cancelButton: 'swal-cancel-button'
+                }
+            });
+
+            return 
+
+        }
+
+
+        if (evento.extendedProps.modelo[0] === 'M') {
+
+
+            // console.log("Evento:\n\n", evento);
+
+
+            this.consultarConfiguracionAplicacion()
+
+
+            this.listaAmbientesDisponibles = [];
+
+
+            // Obtener Tipo Ambiente
+            const ambiente = this.listaValoresAmbientes.filter((item: any) => item.VALOR_CAMPO === evento.extendedProps.tipoAmbiente);
+            const tipo_ambiente = ambiente[0].DESCR_CAMPO;
+
+
+            this.popupFormularioCursoID = evento.extendedProps.cursoID;
+            this.popupFormularioNumeroClase = evento.extendedProps.numeroClase;
+            this.popupFormularioNumeroCampusMTG = evento.extendedProps.numeroCampusMTG;
+            this.popupFormularioCodigoSeccion = evento.extendedProps.codigoSeccion;
+            this.popupFormularioComponente = evento.extendedProps.componente;
+            this.popupFormularioComponenteDesc = evento.extendedProps.componenteDesc;
+            this.popupFormularioAmbienteID = evento.extendedProps.ambienteID;
+            this.popupFormularioTipoAmb = tipo_ambiente;
+            this.popupFormularioTipoAmbiente = evento.extendedProps.tipoAmbiente;
+            this.popupFormularioUbicacion = evento.extendedProps.ubicacion;
+            this.popupFormularioModelo = evento.extendedProps.modelo;
+            this.popupFormularioPrograma = evento.extendedProps.programa;
+            this.popupFormularioAsignatura = evento.extendedProps.asignatura;
+            this.popupFormularioCantidadAlumnos = evento.extendedProps.cantidadAlumnos;
+            this.popupFormularioDocenteNombre = evento.extendedProps.docenteNombre;
+            this.popupFormularioDocenteApPtrn = evento.extendedProps.docenteApPtrn;
+            this.popupFormularioDocenteApMtrn = evento.extendedProps.docenteApMtrn;
+            this.popupFormularioFecha = evento.extendedProps.fecha;
+            this.popupFormularioHoraI = evento.extendedProps.horaI;
+            this.popupFormularioHoraF = evento.extendedProps.horaF;
+
+
+            // console.log("Curso ID:\t\t", this.popupFormularioCursoID);
+            // console.log("Numero Clase:\t\t", this.popupFormularioNumeroClase);
+            // console.log("Numero Campus MTG:\t\t", this.popupFormularioNumeroCampusMTG);
+            // console.log("Codigo Seccion:\t\t", this.popupFormularioCodigoSeccion);
+            // console.log("Componente:\t\t", this.popupFormularioComponente);
+            // console.log("Componente Desc:\t", this.popupFormularioComponenteDesc);
+            // console.log("Ambiente ID:\t\t", this.popupFormularioAmbienteID)
+            // console.log("Ambiente Tipo:\t\t", this.popupFormularioTipoAmbiente);
+            // console.log("Ambiente Tipo Desc:\t", this.popupFormularioTipoAmb);
+            // console.log("Ubicacion:\t\t", this.popupFormularioUbicacion);
+            // console.log("Modelo:\t\t\t", this.popupFormularioModelo);
+            // console.log("Programa:\t\t\t", this.popupFormularioPrograma);
+            // console.log("Asignatura:\t\t", this.popupFormularioAsignatura);
+            // console.log("Cantidad Alumnos:\t", this.popupFormularioCantidadAlumnos);
+            // console.log("Docente Nombre:\t\t", this.popupFormularioDocenteNombre);
+            // console.log("Docente Ap.Pat:\t\t", this.popupFormularioDocenteApPtrn);
+            // console.log("Docente Ap.Mat:\t\t", this.popupFormularioDocenteApMtrn);
+            // console.log("Fecha:\t\t\t", this.popupFormularioFecha);
+            // console.log("Hora Inicio:\t\t", this.popupFormularioHoraI);
+            // console.log("Hora Fin:\t\t", this.popupFormularioHoraF);
+
+
+            this.mostrarFormulario(1, evento);
+
+
+            this.popupFormularioNuevaFecha = "";
+            this.popupFormularioNuevaHoraI = "";
+            this.popupFormularioNuevaHoraF = "";
+            this.popupFormularioNuevoAmbienteID = "";
+            this.popupFormularioNuevoMotivo = "";
+
+
+        } else {
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Reprogramación No Disponible',
+                text: 'La clase no está disponible para reprogramar o ya fue reprogramada anteriormente.',
+                allowOutsideClick: false,
+                customClass: {
+                    popup: 'swal',
+                    icon: 'swal-icon',
+                    title: 'swal-title',
+                    htmlContainer: 'swal-text',
+                    confirmButton: 'swal-confirm-button',
+                    cancelButton: 'swal-cancel-button'
+                }
+
+            });
+
+        }
 
     }
 
@@ -579,15 +708,16 @@ export class CalendarioComponent implements OnInit {
                 this.listaConfiguracionAplicacion = res.lista;
                 this.limiteClase = res.lista[0].limiteReprogramaciones;
                 this.plazoMaximo = res.lista[0].plazoMaximo;
+                this.anticipacionMinima = res.lista[0].anticipacionMinima;
                 this.checkboxDocente = res.lista[0].correoDocente;
                 this.checkboxAlumno = res.lista[0].correoAlumno;
                 this.checkboxDOA = res.lista[0].correoDOA;
                 this.checkboxCoordinadorPrograma = res.lista[0].correoCoordinadorPrograma;
                 this.checkboxCoordinadorAmbiente = res.lista[0].correoCoordinadorAmbiente;
 
-                this.servicioCorreo();
+                this.consultarCorreoCopias();
 
-                console.log("Configuración Aplicación\n\n");
+                console.log("Configuración Aplicación\n\n", this.listaConfiguracionAplicacion);
 
             }
 
@@ -624,7 +754,7 @@ export class CalendarioComponent implements OnInit {
 
                 }
 
-                console.log("Configuración Horario\n\n", this.listaTablaHoraria);
+                // console.log("Configuración Horario\n\n", this.listaTablaHoraria);
 
             }
 
@@ -657,20 +787,21 @@ export class CalendarioComponent implements OnInit {
 
 
             this.listaSemestreSeleccionado = this.listaSemestre.filter((item: any) => (item.codigoGrado === grado));
-            // console.log(this.listaSemestreSeleccionado);
+            console.log(this.listaSemestreSeleccionado);
 
             this.calcularRangoFecha();
 
+            console.log(this.idDocente)
 
             let req = {
                 "institucion": "UPSJB",
                 "gradoAcademico": grado,
                 "semestre": semestre,
-                "codigoAlumno": "1000151224",
+                "codigoAlumno": this.idDocente,
                 // "fechaInicio": this.primerDia,
                 // "fechaFinal": this.ultimoDia
-                "fechaInicio": this.fechaCalendario,
-                "fechaFinal": "2025-06-30"
+                "fechaInicio": this.listaSemestreSeleccionado[0].fechaInicio,
+                "fechaFinal": this.listaSemestreSeleccionado[0].fechaCierre
             }
 
 
@@ -879,7 +1010,7 @@ export class CalendarioComponent implements OnInit {
 
                 }
 
-                console.log("Componentes Valores\n\n", this.listaValoresComponentes);
+                // console.log("Componentes Valores\n\n", this.listaValoresComponentes);
 
             }
 
@@ -907,7 +1038,7 @@ export class CalendarioComponent implements OnInit {
 
                 }
 
-                console.log("Ambientes Valores\n\n", this.listaValoresAmbientes);
+                // console.log("Ambientes Valores\n\n", this.listaValoresAmbientes);
 
             }
 
@@ -940,6 +1071,12 @@ export class CalendarioComponent implements OnInit {
 
         }
 
+
+        this.servicioEnviarCorreo();
+
+    }
+
+    servicioEnviarCorreo() {
 
         let plantilla = `
 
@@ -1050,7 +1187,8 @@ export class CalendarioComponent implements OnInit {
 
     }
 
-    servicioCorreo() {
+
+    consultarCorreoCopias() {
 
         this.listaCorreoCopia = [];
 
@@ -1065,8 +1203,13 @@ export class CalendarioComponent implements OnInit {
         }
 
         if (this.checkboxAlumno) {
-            this.consultarCorreoAlumnosPrueba();
-            // this.consultarCorreoAlumnos();
+
+            if (this.entornoPruebas) {
+                this.consultarCorreoAlumnosPrueba();
+            } else {
+                this.consultarCorreoAlumnos();
+            }
+
         }
 
         // console.log("Correos Finales:\n\n", this.listaCorreoCopia);
@@ -1169,9 +1312,6 @@ export class CalendarioComponent implements OnInit {
         return `${h.padStart(2, '0')}:${m.padStart(2, '0')}`;
     }
 
-    minDate!: string;
-    maxDate!: string;
-
     
     calcularRangoFecha() {
 
@@ -1179,44 +1319,70 @@ export class CalendarioComponent implements OnInit {
         const semestre = this.listaSemestreSeleccionado[0];
 
 
-        //  Antes
+        const fechaActual = new Date(this.fechaActual);
+        fechaActual.setDate(fechaActual.getDate() - this.plazoMaximo)
 
-        const fechaBase = new Date(this.fechaCalendario); // ej. 15/02/2025
-        fechaBase.setDate(fechaBase.getDate() + 1)
 
-        const fechaInicio = new Date(semestre.fechaInicio);   // ej. 01/03/2025 
+        const fechaInicio = new Date(semestre.fechaInicio);
+        fechaInicio.setDate(fechaInicio.getDate())
+
+        const fechaCierre = new Date(semestre.fechaCierre);
 
         
-        const fechaMin = fechaBase > fechaInicio ? fechaBase : fechaInicio;
-
-        //  Despues
-
+        const fechaMin = fechaActual > fechaInicio ? fechaActual : fechaInicio;
         const fechaMax = new Date(semestre.fechaCierre);
+
+
+
+        const fechaActual2 = new Date(this.fechaActual);
+        fechaActual2.setDate(fechaActual2.getDate() + 7);
+
+        this.fechaMinPermitida = fechaActual2.toISOString().split('T')[0];
+
+
+        //#region   CONF.
+
 
         // 7 días antes
         
-        // const fechaMin = new Date(fechaBase);
-        // fechaMin.setDate(fechaBase.getDate() - 7);
-        // fechaMin.setDate(fechaBase.getDate() - this.plazoMaximo);
+        // const fechaMin = new Date(fechaActual);
+        // fechaMin.setDate(fechaActual.getDate() - 7);
+        // fechaMin.setDate(fechaActual.getDate() - this.plazoMaximo);
         
         // 7 días después
 
-        // const fechaMax = new Date(fechaBase);
-        // fechaMax.setDate(fechaBase.getDate() + 7);
-        // fechaMax.setDate(fechaBase.getDate() + this.plazoMaximo);
-        
+        // const fechaMax = new Date(fechaActual);
+        // fechaMax.setDate(fechaActual.getDate() + 7);
+        // fechaMax.setDate(fechaActual.getDate() + this.plazoMaximo);
+
+
+        //#endregion
+
 
         // Convertimos a formato YYYY-MM-DD
-        this.minDate = fechaMin.toISOString().split('T')[0];
-        this.maxDate = fechaMax.toISOString().split('T')[0];
+
+        this.fechaInicio = fechaInicio.toISOString().split('T')[0];
+        this.fechaCierre = fechaCierre.toISOString().split('T')[0];
+
+        this.fechaMin = fechaMin.toISOString().split('T')[0];
+        this.fechaMax = fechaMax.toISOString().split('T')[0];
+
+
+        console.log("Fecha Actual: ", this.fechaActual);
+
+        console.log("Fecha Inicio Ciclo: ", this.fechaMin);
+        console.log("Fecha Cierre Ciclo: ", this.fechaCierre);
+        
+        console.log("Rango a escoger: ", this.fechaMin, " - ", this.fechaMax);
+
 
     }
 
     detectarCambioFechaHora(event: any) {
 
-        const nuevaFecha = event.target.value; // string YYYY-MM-DD
+        /*
 
-        this.fechaCalendario = nuevaFecha;
+        const nuevaFecha = event.target.value; // string YYYY-MM-DD
 
         // ❌ Ya no recalculas rango, se mantiene con la fecha inicial
 
@@ -1224,10 +1390,12 @@ export class CalendarioComponent implements OnInit {
 
         this.calendarOptions = {
             ...this.calendarOptions,
-            initialDate: this.fechaCalendario
+            initialDate: nuevaFecha
         };
 
-        console.log("Nueva fecha seleccionada:", this.fechaCalendario);
+        console.log("Nueva fecha seleccionada:", nuevaFecha);
+
+        */
 
         this.listaAmbientesDisponibles = [];
         this.popupFormularioNuevoAmbienteID = '';

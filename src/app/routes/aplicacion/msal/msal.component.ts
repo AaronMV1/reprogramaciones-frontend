@@ -83,7 +83,6 @@ export class MsalComponent implements OnInit, AfterViewInit {
 
 
                 if (res1.result.resultado === 'OK') {
-
                     
                     let req2 = {
                         correo: this._settingsService.obtenerEmailUsuario()
@@ -125,12 +124,13 @@ export class MsalComponent implements OnInit, AfterViewInit {
     }
 
 
-    private async crearPerfilStorage(res1: InformacionPersona, res2: any) {
+    private async crearPerfilStorage(res1: any, res2: any) {
 
 
-        let pfApellidos, pfNombres, pfCorreo, pfCorreo2, pfPerfil, pfPrograma;
+        let pfEmplID, pfApellidos, pfNombres, pfCorreo, pfCorreo2, pfPerfil, pfPrograma;
 
 
+        pfEmplID = res1.result.emplID;
         pfApellidos = res2.lista[0].apellidos;
         pfNombres = res2.lista[0].nombres;
         pfCorreo = res2.lista[0].correo;
@@ -140,6 +140,7 @@ export class MsalComponent implements OnInit, AfterViewInit {
 
 
         const perfil = {
+            empleadoID: pfEmplID,
             apellidos: pfApellidos,
             nombres: pfNombres,
             correo: pfCorreo,

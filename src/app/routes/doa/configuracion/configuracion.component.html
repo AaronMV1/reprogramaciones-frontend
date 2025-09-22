@@ -31,7 +31,7 @@
 
                 <div class="opcion-fila">
                     <label for="">Límite de reprogramaciones por clase:</label>
-                    <select name="" id="" [(ngModel)]="limiteClase">
+                    <select name="" id="" [(ngModel)]="limiteReprogramaciones">
                         <option value="1">1</option>
                         <option value="2" selected>2</option>
                         <option value="3">3</option>
@@ -43,7 +43,7 @@
                 </div>
 
                 <div class="opcion-fila">
-                    <label for="">Plazo máximo para reprogramar una clase no dictada:</label>
+                    <label for="">Plazo máximo (en días) para reprogramar una clase no dictada:</label>
                     <select name="" id="" [(ngModel)]="plazoMaximo">
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -54,6 +54,21 @@
                         <option value="7" selected>7</option>
                     </select>
                 </div>
+
+                <div class="opcion-fila">
+                    <label for="">Anticipación mínima (en días) para adelantar una clase</label>
+                    <select name="" id="" [(ngModel)]="anticipacionMinima">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7" selected>7</option>
+                    </select>
+                </div>
+
+
 
                 <div class="opcion-columna">
 

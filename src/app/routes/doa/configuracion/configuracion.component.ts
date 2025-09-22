@@ -39,8 +39,9 @@ export class ConfiguracionComponent implements OnInit {
     popupSemestreFCierre: string = '';
 
 
-    limiteClase: any = '';
+    limiteReprogramaciones: any = '';
     plazoMaximo: any = '';
+    anticipacionMinima: any = '';
     checkboxDocente: boolean = false;
     checkboxAlumno: boolean = false;
     checkboxDOA: boolean = false;
@@ -75,8 +76,9 @@ export class ConfiguracionComponent implements OnInit {
 
     restablecerPredeterminados() {
 
-        this.limiteClase = 2;
+        this.limiteReprogramaciones = 2;
         this.plazoMaximo = 7;
+        this.anticipacionMinima = 7;
         this.checkboxDocente = true;
         this.checkboxAlumno = true;
         this.checkboxDOA = false;
@@ -102,8 +104,9 @@ export class ConfiguracionComponent implements OnInit {
 
             (res) => {
 
-                this.limiteClase = res.lista[0].limiteReprogramaciones;
+                this.limiteReprogramaciones = res.lista[0].limiteReprogramaciones;
                 this.plazoMaximo = res.lista[0].plazoMaximo;
+                this.anticipacionMinima = res.lista[0].anticipacionMinima;
                 this.checkboxDocente = res.lista[0].correoDocente;
                 this.checkboxAlumno = res.lista[0].correoAlumno;
                 this.checkboxDOA = res.lista[0].correoDOA;
@@ -124,8 +127,9 @@ export class ConfiguracionComponent implements OnInit {
 
 
         let req = {
-            limiteReprogramaciones: this.limiteClase,
+            limiteReprogramaciones: this.limiteReprogramaciones,
             plazoMaximo: this.plazoMaximo,
+            anticipacionMinima: this.anticipacionMinima,
             correoDocente: this.checkboxDocente,
             correoAlumno: this.checkboxAlumno,
             correoDOA: this.checkboxDOA,
